@@ -1,7 +1,6 @@
 package com.example.cookingapp.fragments
 
 import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -13,18 +12,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cookingapp.R
-import com.example.cookingapp.`interface`.OnBlogClickListener
-import com.example.cookingapp.`interface`.OnFavouriteBlogListener
 import com.example.cookingapp.activity.DashboardActivity
-import com.example.cookingapp.adapter.BlogAdapter
 import com.example.cookingapp.adapter.FavouriteAdapter
 import com.example.cookingapp.model.BlogData
-import com.example.cookingapp.model.FavouriteBlogData
 import com.example.cookingapp.preferences.MySharedPreferences
 import com.example.cookingapp.repository.BlogRepository
 import com.example.cookingapp.viewmodel.BlogViewModel
 import com.example.cookingapp.viewmodelfactory.BlogViewModelFactory
-import java.util.prefs.Preferences
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER

@@ -1,7 +1,6 @@
 package com.example.cookingapp.fragments
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -15,11 +14,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cookingapp.R
-import com.example.cookingapp.`interface`.OnBlogClickListener
 import com.example.cookingapp.activity.DashboardActivity
 import com.example.cookingapp.adapter.BlogAdapter
 import com.example.cookingapp.model.BlogData
-import com.example.cookingapp.model.FavouriteBlogData
 import com.example.cookingapp.preferences.MySharedPreferences
 import com.example.cookingapp.repository.BlogRepository
 import com.example.cookingapp.viewmodel.BlogViewModel

@@ -2,16 +2,9 @@ package com.example.cookingapp.viewmodel
 
 import android.content.Context
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.map
-import androidx.lifecycle.viewModelScope
 import com.example.cookingapp.model.BlogData
-import com.example.cookingapp.model.FavouriteBlogData
 import com.example.cookingapp.repository.BlogRepository
-import com.example.cookingapp.roomdatabase.BlogDao
-import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
