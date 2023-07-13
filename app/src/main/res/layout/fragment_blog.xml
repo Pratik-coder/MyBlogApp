@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".fragments.BlogFragment">
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/scrollView">
+
+
+
+    <LinearLayout
+        android:id="@+id/ll_blog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="10dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Enter your Blog"
+        android:textColor="@color/teal_200"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:padding="10dp"/>
+
+
+     <EditText
+         android:id="@+id/et_blogtitle"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:textColor="@color/black"
+         android:textSize="15sp"
+         android:hint="@string/str_blogtitle"
+         android:singleLine="true"
+         android:layout_marginTop="10dp"
+         android:padding="10dp"
+         android:background="@drawable/et_background"/>
+
+        <EditText
+            android:id="@+id/et_blogdescription"
+            android:layout_width="match_parent"
+            android:layout_height="350dp"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:hint="@string/str_blogdescription"
+            android:singleLine="false"
+            android:layout_marginTop="10dp"
+            android:padding="10dp"
+            android:gravity="start"
+            android:background="@drawable/et_background"/>
+
+        <EditText
+            android:id="@+id/et_blogplace"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:hint="@string/str_nameoftheplace"
+            android:singleLine="true"
+            android:layout_marginTop="10dp"
+            android:padding="10dp"
+            android:background="@drawable/et_background"/>
+
+        <TextView
+            android:id="@+id/tv_addblog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginTop="20dp"
+            android:textStyle="bold"
+            android:padding="10dp"
+            android:textSize="20sp"
+            android:background="@drawable/btn_background"
+            android:text="@string/str_uploadBlog"/>
+
+
+    </LinearLayout>
+    </ScrollView>
+</FrameLayout>

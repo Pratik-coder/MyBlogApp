@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">CookingApp</string>
+    <string name="str_home">Home</string>
+    <string name="str_users">Users</string>
+    <string name="str_favourites">Favourites</string>
+    <string name="str_addblog">Add Blog</string>
+    <string name="str_uploadBlog">ADD BLOG</string>
+    <string name="str_chatList">ChatList</string>
+    <string name="str_profile">Profile</string>
+    <string name="str_blogtitle">Enter Blog Title</string>
+    <string name="str_blogdescription">Enter Blog Description</string>
+    <string name="str_nameoftheplace">Enter Name of the Place</string>
+    <string name="str_noblog">Oh! It think that you have no blog,please add some blog</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
