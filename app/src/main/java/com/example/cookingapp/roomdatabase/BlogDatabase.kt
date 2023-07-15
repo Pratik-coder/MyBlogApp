@@ -6,11 +6,13 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.cookingapp.model.BlogData
 
+
 @Database(entities = [BlogData::class], version = 2, exportSchema = false)
 
 abstract class BlogDatabase:RoomDatabase()
 {
     abstract fun blogDao():BlogDao
+  //  abstract fun favBlogDao():FavouriteBlogDao
 
 
     companion object

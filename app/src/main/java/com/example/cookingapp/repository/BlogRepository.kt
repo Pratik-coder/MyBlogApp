@@ -2,6 +2,7 @@ package com.example.cookingapp.repository
 
 import android.content.Context
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.example.cookingapp.model.BlogData
 import com.example.cookingapp.roomdatabase.BlogDatabase
 import kotlinx.coroutines.CoroutineScope
@@ -32,19 +33,19 @@ class BlogRepository
         }
     }
 
-    fun insertFavouriteBlogs(context: Context,favouriteTitle:String,favouriteDescription:String,favouritePlace:String,isFavourite:Boolean)
+    fun insertFavouriteBlogs(context: Context,blogData: BlogData/*favouriteTitle:String,favouriteDescription:String,favouritePlace:String,isFavourite:Boolean*/)
     {
            blogDatabase=initializeDatabase(context)
            CoroutineScope(IO).launch {
-            val blogData=BlogData(favouriteTitle,favouriteDescription,favouritePlace,isFavourite=true)
+           // val blogData=BlogData(favouriteTitle,favouriteDescription,favouritePlace,true)
             blogDatabase.blogDao().addToFavourite(blogData)
            }
     }
 
-    fun getFavouriteBlogList(context: Context,isFavourite: Boolean):LiveData<List<BlogData>>
+    fun getFavouriteBlogList(context: Context,isFavourite:Boolean):LiveData<List<BlogData>>
     {
         blogDatabase=initializeDatabase(context)
-        return blogDatabase.blogDao().getFavouriteBlogList(isFavourite)
+        return blogDatabase.blogDao().getFavouriteBlogList(true)
 
     }
 

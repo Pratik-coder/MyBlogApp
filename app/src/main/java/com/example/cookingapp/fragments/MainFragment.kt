@@ -11,11 +11,13 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cookingapp.R
 import com.example.cookingapp.activity.DashboardActivity
 import com.example.cookingapp.adapter.BlogAdapter
+import com.example.cookingapp.constant.OnFavouriteBlogClickListener
 import com.example.cookingapp.model.BlogData
 import com.example.cookingapp.preferences.MySharedPreferences
 import com.example.cookingapp.repository.BlogRepository
@@ -39,9 +41,11 @@ class MainFragment : Fragment(){
     private lateinit var recyclerViewBlogList: RecyclerView
     private lateinit var blogViewModel: BlogViewModel
     private  var blogRepository: BlogRepository = BlogRepository()
-    private lateinit var blogAdapter: BlogAdapter
+    private lateinit var blogAdapter:BlogAdapter
     private lateinit var textViewNoBlog:TextView
     lateinit var mySharedPreferences:MySharedPreferences
+    private lateinit var blogData:List<BlogData>
+
 
 
     override fun onAttach(context: Context) {
@@ -80,28 +84,41 @@ class MainFragment : Fragment(){
         mySharedPreferences=MySharedPreferences()
         recyclerViewBlogList.layoutManager = LinearLayoutManager(activity)
         blogViewModel=ViewModelProvider(this,BlogViewModelFactory(blogRepository)).get(BlogViewModel::class.java)
-        blogViewModel.getAllBlogs(activity)?.observe(activity, Observer<List<BlogData>> {
+        blogViewModel.getAllBlogs(activity).observe(activity, Observer<List<BlogData>> {
             if (it!=null)
             {
                 blogAdapter= BlogAdapter(activity,it)
                 recyclerViewBlogList.adapter=blogAdapter
             }
-            blogAdapter.setOnFavouriteClickListener(object :BlogAdapter.OnFavouriteImageClick
+
+           /* blogAdapter.setOnFavouriteClickListener(object :BlogAdapter.OnFavouriteImageClick
             {
                 @SuppressLint("SuspiciousIndentation")
                 override fun OnFavouriteBlogClick(position: Int) {
-                    val favBlog = it[position] as BlogData
-                        mySharedPreferences.addFavouriteBlogs(activity, favBlog)
-                        favBlog.id=R.drawable.ic_baseline_favorite_24
-                        favBlog.isFavourite=true
-                        recyclerViewBlogList.adapter?.notifyDataSetChanged()
-                        Toast.makeText(activity, "Blog Added To Favourite", Toast.LENGTH_SHORT).show()
+                    val favBlog = it[position]
+                        blogViewModel.AddBlogsToFavourite(
+                            activity,
+                            favBlog
+                        )
+                        Toast.makeText(activity, "Blog Added To Favourite", Toast.LENGTH_SHORT)
+                            .show()
 
+                    *//*val favSelected=it[position].id
+                    val inFavouriteListBlogs=it.first{it ->it.id==favSelected}
+                    inFavouriteListBlogs.isFavourite=!inFavouriteListBlogs.isFavourite*//*
+                    mySharedPreferences.saveFavourites(activity,it)
+                    blogAdapter.notifyDataSetChanged()
+                }
+            })*/
+            blogAdapter.setOnFavouriteClickListener(object :BlogAdapter.OnFavouriteImageClick
+            {
+                override fun OnFavouriteBlogClick(blogData: BlogData) {
+                    blogViewModel.AddBlogsToFavourite(activity,blogData)
+                    mySharedPreferences.addFavouriteBlogs(activity,blogData)
+                    Toast.makeText(activity,"Blog Added To Favourites",Toast.LENGTH_SHORT).show()
                 }
             })
-
         })
-
     }
 
     override fun onStart() {
@@ -138,6 +155,15 @@ class MainFragment : Fragment(){
     companion object
     {
         fun newInstance()=MainFragment()
+    }
+
+    private fun AddToFavourite(position:Int)
+    {
+         val favSelected=blogData[position].id
+         val inFavouriteListBlogs=blogData.first{blogData ->blogData.id==favSelected}
+         inFavouriteListBlogs.isFavourite=!inFavouriteListBlogs.isFavourite
+         blogAdapter.notifyDataSetChanged()
+
     }
 }
 

@@ -47,7 +47,7 @@ class MySharedPreferences
         }
     }
 
-    fun getFavouriteBlogs(context: Context): ArrayList<BlogData>?
+    fun getFavouriteBlogs(context: Context): List<BlogData>?
     {
         val favouritePreferences: SharedPreferences
         var blogs:List<BlogData>
@@ -62,10 +62,12 @@ class MySharedPreferences
             blogs= mutableListOf(*favouriteBlogs)
             blogs=ArrayList<BlogData>(blogs)
         }
-        else
+        /*else
         {
             return null
-        }
-        return kotlin.collections.ArrayList(blogs)
+        }*/
+     //return kotlin.collections.ArrayList(blogs)
+        return emptyList()
+
     }
 }

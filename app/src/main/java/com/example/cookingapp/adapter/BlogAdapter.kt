@@ -8,18 +8,22 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.cardview.widget.CardView
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cookingapp.R
+import com.example.cookingapp.constant.OnFavouriteBlogClickListener
 import com.example.cookingapp.model.BlogData
 import com.example.cookingapp.preferences.MySharedPreferences
+import com.example.cookingapp.repository.BlogRepository
+import com.example.cookingapp.viewmodel.BlogViewModel
+import com.example.cookingapp.viewmodelfactory.BlogViewModelFactory
 
 
 class BlogAdapter(private var context: Context,private var blogList:List<BlogData>): RecyclerView.Adapter<BlogAdapter.MyViewHolder>()
 {
     private lateinit var onFavouriteClickListener:OnFavouriteImageClick
-    private lateinit var mySharedPreferences: MySharedPreferences
-
-
+    private var mySharedPreferences: MySharedPreferences= MySharedPreferences()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val view=LayoutInflater.from(parent.context).inflate(R.layout.layout_bloglist,parent,false)
@@ -31,30 +35,20 @@ class BlogAdapter(private var context: Context,private var blogList:List<BlogDat
         val blogData=blogList[position]
         holder.textViewBlogTitle.text=blogData.title
         holder.textViewBlogDescription.text=blogData.description
-       /* if (onBlogClickListener.isBlogFavourite(context,blogData))
-        {
-            holder.imageViewFavourite.setImageResource(R.drawable.ic_baseline_favorite_24)
-        }
-        else
-        {
-            holder.imageViewFavourite.setImageResource(R.drawable.ic_baseline_favorite_border_24)
-        }
-        holder.imageViewFavourite.setOnClickListener {
-            onBlogClickListener.addToFavourite(context,blogData)
-        }*/
       //  holder.onBindFavourite(setFavouriteItem(position))
         holder.imageViewFavourite.setOnClickListener {
-            onFavouriteClickListener.OnFavouriteBlogClick(position)
-            checkFavouriteItem(blogData)
-            if (checkFavouriteItem(blogData))
-            {
-                holder.imageViewFavourite.setImageResource(R.drawable.ic_baseline_favorite_24)
-                holder.imageViewFavourite.isEnabled=false
-            }
+                onFavouriteClickListener.OnFavouriteBlogClick(blogData)
+                 if (checkFavouriteItem(blogData))
+                 {
+                     blogData.isFavourite=true
+                     holder.imageViewFavourite.setImageResource(R.drawable.ic_baseline_favorite_24)
+                     holder.imageViewFavourite.isEnabled=false
+                 }
             else
-            {
-                holder.imageViewFavourite.setImageResource(R.drawable.ic_baseline_favorite_border_24)
-            }
+                 {
+                     holder.imageViewFavourite.setImageResource(R.drawable.ic_baseline_favorite_border_24)
+                 }
+
         }
 
     }
@@ -64,7 +58,7 @@ class BlogAdapter(private var context: Context,private var blogList:List<BlogDat
         var favouriteCheck:Boolean=false
         var favouriteBlogs:List<BlogData>
         mySharedPreferences=MySharedPreferences()
-        favouriteBlogs= mySharedPreferences.getFavouriteBlogs(context)!!
+       favouriteBlogs= mySharedPreferences.getFavouriteBlogs(context)!!
         if (favouriteBlogs!=null)
         {
             for (blogdata in favouriteBlogs)
@@ -74,6 +68,7 @@ class BlogAdapter(private var context: Context,private var blogList:List<BlogDat
                     favouriteCheck=true
                 }
             }
+
         }
         return true
     }
@@ -84,7 +79,7 @@ class BlogAdapter(private var context: Context,private var blogList:List<BlogDat
 
    interface OnFavouriteImageClick
    {
-       fun OnFavouriteBlogClick(position:Int)
+       fun OnFavouriteBlogClick(blogData: BlogData)
    }
 
     fun setOnFavouriteClickListener(listener:OnFavouriteImageClick)
@@ -101,5 +96,19 @@ class BlogAdapter(private var context: Context,private var blogList:List<BlogDat
        val textViewBlogTitle:TextView=itemView.findViewById(R.id.tv_blogTitle)
        val textViewBlogDescription:TextView=itemView.findViewById(R.id.tv_blogDescription)
        val imageViewFavourite:ImageView=itemView.findViewById(R.id.iv_blogFavourite)
+    }
+
+    companion object
+    {
+        private val BLOG_FAVOURITES=object : DiffUtil.ItemCallback<BlogData>()
+        {
+            override fun areItemsTheSame(oldItem: BlogData, newItem: BlogData): Boolean {
+              return oldItem.id==newItem.id
+            }
+
+            override fun areContentsTheSame(oldItem: BlogData, newItem: BlogData): Boolean {
+               return oldItem==newItem
+            }
+        }
     }
 }

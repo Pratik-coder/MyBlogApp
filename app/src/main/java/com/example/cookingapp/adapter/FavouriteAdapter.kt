@@ -25,7 +25,6 @@ class FavouriteAdapter(private var context: Context,private var favouriteBlogLis
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int)
     {
-
         mySharedPreferences=MySharedPreferences()
         val favouriteBlogData=favouriteBlogList[position]
         if (favouriteBlogList!=null) {

@@ -79,6 +79,7 @@ class FavouritesFragment : Fragment() {
         {
             if (it!=null)
             {
+                mySharedpreferences.getFavouriteBlogs(activity)
                 favouriteAdapter= FavouriteAdapter(activity,it)
                 recyclerViewFavouriteBlog.layoutManager=LinearLayoutManager(activity,LinearLayoutManager.VERTICAL,false)
                 recyclerViewFavouriteBlog.adapter=favouriteAdapter
