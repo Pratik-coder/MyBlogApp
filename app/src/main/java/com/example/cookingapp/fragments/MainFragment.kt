@@ -43,8 +43,8 @@ class MainFragment : Fragment(){
     private  var blogRepository: BlogRepository = BlogRepository()
     private lateinit var blogAdapter:BlogAdapter
     private lateinit var textViewNoBlog:TextView
-    lateinit var mySharedPreferences:MySharedPreferences
-    private lateinit var blogData:List<BlogData>
+    lateinit var mySharedPreferences: MySharedPreferences
+    private lateinit var blogData:BlogData
 
 
 
@@ -81,7 +81,6 @@ class MainFragment : Fragment(){
     {
         super.onActivityCreated(savedInstanceState)
         val activity=activity as DashboardActivity
-        mySharedPreferences=MySharedPreferences()
         recyclerViewBlogList.layoutManager = LinearLayoutManager(activity)
         blogViewModel=ViewModelProvider(this,BlogViewModelFactory(blogRepository)).get(BlogViewModel::class.java)
         blogViewModel.getAllBlogs(activity).observe(activity, Observer<List<BlogData>> {
@@ -90,30 +89,12 @@ class MainFragment : Fragment(){
                 blogAdapter= BlogAdapter(activity,it)
                 recyclerViewBlogList.adapter=blogAdapter
             }
-
-           /* blogAdapter.setOnFavouriteClickListener(object :BlogAdapter.OnFavouriteImageClick
-            {
-                @SuppressLint("SuspiciousIndentation")
-                override fun OnFavouriteBlogClick(position: Int) {
-                    val favBlog = it[position]
-                        blogViewModel.AddBlogsToFavourite(
-                            activity,
-                            favBlog
-                        )
-                        Toast.makeText(activity, "Blog Added To Favourite", Toast.LENGTH_SHORT)
-                            .show()
-
-                    *//*val favSelected=it[position].id
-                    val inFavouriteListBlogs=it.first{it ->it.id==favSelected}
-                    inFavouriteListBlogs.isFavourite=!inFavouriteListBlogs.isFavourite*//*
-                    mySharedPreferences.saveFavourites(activity,it)
-                    blogAdapter.notifyDataSetChanged()
-                }
-            })*/
             blogAdapter.setOnFavouriteClickListener(object :BlogAdapter.OnFavouriteImageClick
             {
                 override fun OnFavouriteBlogClick(blogData: BlogData) {
-                    blogViewModel.AddBlogsToFavourite(activity,blogData)
+
+                 //   blogViewModel.MarkBlogAsFavourite(activity,blogData)
+                    mySharedPreferences=MySharedPreferences()
                     mySharedPreferences.addFavouriteBlogs(activity,blogData)
                     Toast.makeText(activity,"Blog Added To Favourites",Toast.LENGTH_SHORT).show()
                 }
@@ -157,14 +138,14 @@ class MainFragment : Fragment(){
         fun newInstance()=MainFragment()
     }
 
-    private fun AddToFavourite(position:Int)
+    /*private fun AddToFavourite(position:Int)
     {
          val favSelected=blogData[position].id
          val inFavouriteListBlogs=blogData.first{blogData ->blogData.id==favSelected}
          inFavouriteListBlogs.isFavourite=!inFavouriteListBlogs.isFavourite
          blogAdapter.notifyDataSetChanged()
 
-    }
+    }*/
 }
 
 

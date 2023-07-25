@@ -11,7 +11,7 @@ import com.example.cookingapp.constant.Constant
     var title:String,
     @ColumnInfo(name = "description")
     var description:String,
-    @ColumnInfo("place")
+    @ColumnInfo(name="place")
     var place:String,
     @ColumnInfo(name="isFavourite")
     var isFavourite:Boolean=false)

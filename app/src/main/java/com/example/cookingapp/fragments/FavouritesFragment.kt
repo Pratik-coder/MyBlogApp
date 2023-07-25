@@ -15,7 +15,6 @@ import com.example.cookingapp.R
 import com.example.cookingapp.activity.DashboardActivity
 import com.example.cookingapp.adapter.FavouriteAdapter
 import com.example.cookingapp.model.BlogData
-import com.example.cookingapp.preferences.MySharedPreferences
 import com.example.cookingapp.repository.BlogRepository
 import com.example.cookingapp.viewmodel.BlogViewModel
 import com.example.cookingapp.viewmodelfactory.BlogViewModelFactory
@@ -38,8 +37,8 @@ class FavouritesFragment : Fragment() {
     private lateinit var blogViewModel: BlogViewModel
     private  var blogRepository: BlogRepository = BlogRepository()
     private lateinit var favouriteAdapter: FavouriteAdapter
-    private var isBlogFavourite:Boolean=true
-    private lateinit var mySharedpreferences: MySharedPreferences
+
+
 
 
 
@@ -73,16 +72,15 @@ class FavouritesFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         val activity=activity as DashboardActivity
-        mySharedpreferences=MySharedPreferences()
         blogViewModel= ViewModelProvider(this, BlogViewModelFactory(blogRepository)).get(BlogViewModel::class.java)
-        blogViewModel.getAllFavouriteBlogList(activity,true).observe(activity,Observer<List<BlogData>>
+        blogViewModel.getAllFavouriteBlogs(activity)?.observe(activity,Observer<List<BlogData>>
         {
             if (it!=null)
             {
-                mySharedpreferences.getFavouriteBlogs(activity)
-                favouriteAdapter= FavouriteAdapter(activity,it)
-                recyclerViewFavouriteBlog.layoutManager=LinearLayoutManager(activity,LinearLayoutManager.VERTICAL,false)
+                favouriteAdapter=FavouriteAdapter(activity,it)
                 recyclerViewFavouriteBlog.adapter=favouriteAdapter
+                recyclerViewFavouriteBlog.layoutManager = LinearLayoutManager(activity)
+               favouriteAdapter.getUpDatedList(it)
             }
             else
             {
@@ -96,6 +94,7 @@ class FavouritesFragment : Fragment() {
     override fun onStart() {
         super.onStart()
     }
+
 
 
     override fun onResume() {
