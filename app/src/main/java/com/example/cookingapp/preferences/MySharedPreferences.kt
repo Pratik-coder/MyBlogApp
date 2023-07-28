@@ -18,7 +18,7 @@ class MySharedPreferences
     lateinit var preferences: SharedPreferences
     lateinit var editor: SharedPreferences.Editor
     val PREFS_NAME="BLOG_APP"
-    val FAVOURITES:Boolean=true
+    val FAVOURITES="isFavourite"
 
     fun init(context: Context)
     {
@@ -50,7 +50,7 @@ class MySharedPreferences
     }*/
 
 
-    fun saveFavourites(context: Context, favouriteBlog:ArrayList<BlogData>)
+    fun saveFavourites(context: Context, favouriteBlog:BlogData)
     {
         var sharedPreferences: SharedPreferences
         var editor: SharedPreferences.Editor
@@ -58,44 +58,36 @@ class MySharedPreferences
         editor=sharedPreferences.edit()
         var gson= Gson()
         var jsonFavouriteBlogs=gson.toJson(favouriteBlog)
-        editor.putString(FAVOURITES.toString(),jsonFavouriteBlogs).commit()
-       // editor.putBoolean(FAVOURITES,true).commit()
+        editor.putString(FAVOURITES,jsonFavouriteBlogs)
+        editor.putBoolean(FAVOURITES,true).commit()
     }
 
 
 
     fun addFavouriteBlogs(context:Context, blogData: BlogData)
     {
-        /*var myFavouriteBlogList:List<BlogData>?=null
-        myFavouriteBlogList= getFavouriteBlogs(context)
-        if (myFavouriteBlogList==null)
-        {
-            myFavouriteBlogList=ArrayList<BlogData>()
-            myFavouriteBlogList.add(blogData)
-            saveFavourites(context,myFavouriteBlogList)
-        }*/
-
-        var myFavouriteBlogList:MutableList<BlogData>?=getFavouriteBlogs(context)?.toMutableList()
+       /* var myFavouriteBlogList:MutableList<BlogData>?=getFavouriteBlogs(context)?.toMutableList()
         val currentList = myFavouriteBlogList?.toMutableList() ?: mutableListOf()
-        /*if (myFavouriteBlogList==null)
-        {
-            myFavouriteBlogList= mutableListOf()
-        }*/
         if (!blogData.isFavourite) {
             blogData.isFavourite=true
             currentList.add(blogData)
-            myFavouriteBlogList=currentList
-          //  saveFavourites(context,myFavouriteBlogList as ArrayList<BlogData>)
+        }
+*/      val blogList: MutableList<BlogData> = mutableListOf()
+        if (!blogData.isFavourite)
+        {
+            blogData.isFavourite=true
+            blogList.add(blogData)
+            saveFavourites(context,blogData)
         }
     }
 
-    fun getFavouriteBlogs(context: Context):List<BlogData>?
+    fun getFavouriteBlogs(context: Context): List<BlogData>?
     {
 
-       // var blogs:List<BlogData>
+        var blogs:List<BlogData>
         val favouritePreferences:SharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
 
-       /* if (favouritePreferences.contains(FAVOURITES))
+        if (favouritePreferences.contains(FAVOURITES))
         {
             val listFavourites: String? =favouritePreferences.getString(FAVOURITES,null)
             val gson= Gson()
@@ -106,10 +98,10 @@ class MySharedPreferences
         else
         {
             return null
-        }*/
-        if (favouritePreferences.contains(FAVOURITES.toString()))
+        }
+       /* if (favouritePreferences.contains(FAVOURITES))
         {
-            val listFavourites: String? =favouritePreferences.getString(FAVOURITES.toString(),null)
+            val listFavourites: String? =favouritePreferences.getString(FAVOURITES,null)
             if (listFavourites!=null)
             {
                 val gson= Gson()
@@ -117,10 +109,7 @@ class MySharedPreferences
                 return favouriteBlogs.toList()
             }
         }
-            return null
+            return null*/
+        return blogs
     }
-
-
-
-
 }

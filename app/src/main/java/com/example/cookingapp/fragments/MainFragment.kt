@@ -48,8 +48,10 @@ class MainFragment : Fragment(){
 
 
 
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
+
     }
 
 
@@ -74,12 +76,6 @@ class MainFragment : Fragment(){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-    }
-
-
-    override fun onActivityCreated(savedInstanceState: Bundle?)
-    {
-        super.onActivityCreated(savedInstanceState)
         val activity=activity as DashboardActivity
         recyclerViewBlogList.layoutManager = LinearLayoutManager(activity)
         blogViewModel=ViewModelProvider(this,BlogViewModelFactory(blogRepository)).get(BlogViewModel::class.java)
@@ -89,6 +85,34 @@ class MainFragment : Fragment(){
                 blogAdapter= BlogAdapter(activity,it)
                 recyclerViewBlogList.adapter=blogAdapter
             }
+
+            blogAdapter.setOnFavouriteClickListener(object :BlogAdapter.OnFavouriteImageClick
+            {
+                override fun OnFavouriteBlogClick(blogData: BlogData) {
+
+                      blogViewModel.MarkBlogAsFavourite(activity,blogData)
+                   /* mySharedPreferences=MySharedPreferences()
+                    mySharedPreferences.addFavouriteBlogs(activity,blogData)*/
+                    Toast.makeText(activity,"Blog Added To Favourites",Toast.LENGTH_SHORT).show()
+                }
+            })
+        })
+    }
+
+
+    override fun onActivityCreated(savedInstanceState: Bundle?)
+    {
+        super.onActivityCreated(savedInstanceState)
+        /*val activity=activity as DashboardActivity
+        recyclerViewBlogList.layoutManager = LinearLayoutManager(activity)
+        blogViewModel=ViewModelProvider(this,BlogViewModelFactory(blogRepository)).get(BlogViewModel::class.java)
+        blogViewModel.getAllBlogs(activity).observe(activity, Observer<List<BlogData>> {
+            if (it!=null)
+            {
+                blogAdapter= BlogAdapter(activity,it)
+                recyclerViewBlogList.adapter=blogAdapter
+            }
+
             blogAdapter.setOnFavouriteClickListener(object :BlogAdapter.OnFavouriteImageClick
             {
                 override fun OnFavouriteBlogClick(blogData: BlogData) {
@@ -99,7 +123,7 @@ class MainFragment : Fragment(){
                     Toast.makeText(activity,"Blog Added To Favourites",Toast.LENGTH_SHORT).show()
                 }
             })
-        })
+        })*/
     }
 
     override fun onStart() {

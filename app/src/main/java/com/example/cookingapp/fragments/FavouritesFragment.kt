@@ -73,14 +73,14 @@ class FavouritesFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         val activity=activity as DashboardActivity
         blogViewModel= ViewModelProvider(this, BlogViewModelFactory(blogRepository)).get(BlogViewModel::class.java)
-        blogViewModel.getAllFavouriteBlogs(activity)?.observe(activity,Observer<List<BlogData>>
+        blogViewModel.getAllFavouriteBlogs(activity,true)?.observe(activity,Observer<List<BlogData>>
         {
             if (it!=null)
             {
                 favouriteAdapter=FavouriteAdapter(activity,it)
                 recyclerViewFavouriteBlog.adapter=favouriteAdapter
                 recyclerViewFavouriteBlog.layoutManager = LinearLayoutManager(activity)
-               favouriteAdapter.getUpDatedList(it)
+                //favouriteAdapter.getUpDatedList(it)
             }
             else
             {

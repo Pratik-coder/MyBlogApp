@@ -43,6 +43,7 @@ class BlogAdapter(private var context: Context,private var blogList:List<BlogDat
       //  holder.onBindFavourite(setFavouriteItem(position))
         holder.imageViewFavourite.setOnClickListener {
             onFavouriteClickListener.OnFavouriteBlogClick(blogData)
+          //  mySharedPreferences.addFavouriteBlogs(context,blogData)
             holder.imageViewFavourite.setImageResource(R.drawable.ic_baseline_favorite_24)
         }
     }
