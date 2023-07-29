@@ -38,10 +38,6 @@ class FavouritesFragment : Fragment() {
     private  var blogRepository: BlogRepository = BlogRepository()
     private lateinit var favouriteAdapter: FavouriteAdapter
 
-
-
-
-
     override fun onAttach(context: Context) {
         super.onAttach(context)
     }
@@ -78,9 +74,8 @@ class FavouritesFragment : Fragment() {
             if (it!=null)
             {
                 favouriteAdapter=FavouriteAdapter(activity,it)
+                recyclerViewFavouriteBlog.layoutManager=LinearLayoutManager(activity,LinearLayoutManager.VERTICAL,false)
                 recyclerViewFavouriteBlog.adapter=favouriteAdapter
-                recyclerViewFavouriteBlog.layoutManager = LinearLayoutManager(activity)
-                //favouriteAdapter.getUpDatedList(it)
             }
             else
             {

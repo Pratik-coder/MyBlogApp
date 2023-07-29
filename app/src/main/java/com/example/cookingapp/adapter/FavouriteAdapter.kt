@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.cookingapp.R
 import com.example.cookingapp.model.BlogData
 
-
 class FavouriteAdapter(private var context: Context,private var favouriteBlogList: List<BlogData>) :RecyclerView.Adapter<FavouriteAdapter.MyViewHolder>()
 {
 
@@ -25,17 +24,9 @@ class FavouriteAdapter(private var context: Context,private var favouriteBlogLis
     {
 
         val favouriteBlogData=favouriteBlogList[position]
-        holder.textViewFavouriteBlogTitle.text = favouriteBlogData.title
+        holder.textViewFavouriteBlogTitle.text =favouriteBlogData.title
         holder.textViewFavouriteBlogPlace.text = favouriteBlogData.place
     }
-
-    fun getUpDatedList(favouritesBlog:List<BlogData>)
-    {
-        favouriteBlogList=favouritesBlog
-        notifyDataSetChanged()
-    }
-
-
 
     override fun getItemCount(): Int
     {

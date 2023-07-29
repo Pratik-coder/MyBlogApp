@@ -19,9 +19,6 @@ class BlogViewModel @Inject constructor (private val blogRepository: BlogReposit
     private lateinit var mySharedPreferences: MySharedPreferences
 
 
-
-
-
     fun getAllBlogs(context: Context): LiveData<List<BlogData>>
     {
         blogList=blogRepository.getAllBlogList(context)
@@ -49,9 +46,9 @@ class BlogViewModel @Inject constructor (private val blogRepository: BlogReposit
     {
         /*mySharedPreferences=MySharedPreferences()
         mySharedPreferences.getFavouriteBlogs(context)*/
-        blogRepository.getFavouriteBlogs(context,true)
+        if (isFavourite) {
+            blogRepository.getFavouriteBlogs(context, isFavourite = true)
+        }
         return blogList
     }
-
-
 }

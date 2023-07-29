@@ -15,7 +15,8 @@ import com.example.cookingapp.constant.Constant
     var place:String,
     @ColumnInfo(name="isFavourite")
     var isFavourite:Boolean=false)
-{
+
+ {
   @PrimaryKey (autoGenerate = true)
   var id:Int = 0
   }

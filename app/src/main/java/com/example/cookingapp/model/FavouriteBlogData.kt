@@ -1,4 +1,5 @@
 /*
+
 package com.example.cookingapp.model
 
 import androidx.room.ColumnInfo
@@ -11,13 +12,20 @@ import com.example.cookingapp.constant.Constant
 data class FavouriteBlogData(
     @PrimaryKey(autoGenerate = true)
     var favBlogId:Int = 0,
-    @ColumnInfo(name = "title")
-    var title:String,
-    @ColumnInfo(name = "description")
-    var description:String,
-    @ColumnInfo("place")
-    var place:String,
+    @ColumnInfo(name = "favBlogTitle")
+    var favBlogTitle:String,
+    @ColumnInfo(name = "favBlogDescription")
+    var favBlogDescription:String,
+    @ColumnInfo("favBlogPlace")
+    var favBlogPlace:String,
     @ColumnInfo(name="isFavourite")
     var isFavourite:Boolean=true
 )
+*/
+/*{
+    @PrimaryKey(autoGenerate = true)
+    var favBlogId:Int = 0
+}*//*
+
+
 */

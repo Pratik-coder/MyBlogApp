@@ -52,7 +52,8 @@ class BlogRepository
 
     fun getFavouriteBlogs(context: Context,isFavourite:Boolean):LiveData<List<BlogData>>
     {
+
         blogDatabase=initializeDatabase(context)
-        return blogDatabase.blogDao().getFavouriteBlogList(true)
+        return blogDatabase.blogDao().getFavouriteBlogList(isFavourite = true)
     }
 }

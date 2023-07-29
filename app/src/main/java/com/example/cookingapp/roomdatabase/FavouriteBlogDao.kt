@@ -1,4 +1,5 @@
 /*
+
 package com.example.cookingapp.roomdatabase
 
 import androidx.lifecycle.LiveData
@@ -10,16 +11,9 @@ import com.example.cookingapp.model.BlogData
 import com.example.cookingapp.model.FavouriteBlogData
 
 @Dao
-interface FavouriteBlogDao
-{
-    @Insert
-    suspend fun addToFavourite(blogData: BlogData)
+interface FavouriteBlogDao {
+    @Query("SELECT * FROM ${Constant.FAVOURITE_DATABASEBLOGS} INNER JOIN ${Constant.DATABASE_NAME} ON FavouriteBlogData.favBlogTitle=BlogData.title")
+    fun getAllFavouriteBlogList(isFavourite:Boolean): LiveData<List<FavouriteBlogData>>
+}
 
-    */
-/*@Query("SELECT * FROM ${Constant.FAVOURITE_DATABASEBLOGS} WHERE isFavourite=:isFavourite")
-    fun getFavouriteBlogList(isFavourite:Boolean): LiveData<List<FavouriteBlogData>>
-    *//*
-
-    @Query("SELECT * FROM ${Constant.FAVOURITE_DATABASEBLOGS} INNER JOIN ${Constant.DATABASE_NAME} ON favouriteBlogs.favBlogId=blogs.id")
-    fun getFavouriteBlogList(isFavourite:Boolean): LiveData<List<FavouriteBlogData>>
-}*/
+*/

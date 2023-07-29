@@ -7,6 +7,7 @@ import androidx.room.RoomDatabase
 import com.example.cookingapp.model.BlogData
 
 
+
 @Database(entities = [BlogData::class], version = 3, exportSchema = false)
 
 abstract class BlogDatabase:RoomDatabase()
