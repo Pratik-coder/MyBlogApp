@@ -1,6 +1,5 @@
 package com.example.cookingapp.fragments
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -11,13 +10,11 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cookingapp.R
 import com.example.cookingapp.activity.DashboardActivity
 import com.example.cookingapp.adapter.BlogAdapter
-import com.example.cookingapp.constant.OnFavouriteBlogClickListener
 import com.example.cookingapp.model.BlogData
 import com.example.cookingapp.preferences.MySharedPreferences
 import com.example.cookingapp.repository.BlogRepository
@@ -91,9 +88,7 @@ class MainFragment : Fragment(){
                 override fun OnFavouriteBlogClick(blogData: BlogData) {
 
                       blogViewModel.MarkBlogAsFavourite(activity,blogData)
-                   /* mySharedPreferences=MySharedPreferences()
-                    mySharedPreferences.addFavouriteBlogs(activity,blogData)*/
-                    Toast.makeText(activity,"Blog Added To Favourites",Toast.LENGTH_SHORT).show()
+                     Toast.makeText(activity,"Blog Added To Favourites",Toast.LENGTH_SHORT).show()
                 }
             })
         })
@@ -161,15 +156,6 @@ class MainFragment : Fragment(){
     {
         fun newInstance()=MainFragment()
     }
-
-    /*private fun AddToFavourite(position:Int)
-    {
-         val favSelected=blogData[position].id
-         val inFavouriteListBlogs=blogData.first{blogData ->blogData.id==favSelected}
-         inFavouriteListBlogs.isFavourite=!inFavouriteListBlogs.isFavourite
-         blogAdapter.notifyDataSetChanged()
-
-    }*/
 }
 
 

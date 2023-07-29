@@ -2,11 +2,9 @@ package com.example.cookingapp.viewmodel
 
 import android.content.Context
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cookingapp.model.BlogData
-import com.example.cookingapp.preferences.MyPreferences
 import com.example.cookingapp.preferences.MySharedPreferences
 import com.example.cookingapp.repository.BlogRepository
 import kotlinx.coroutines.launch

@@ -1,6 +1,5 @@
 package com.example.cookingapp.adapter
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -9,17 +8,11 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.cardview.widget.CardView
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cookingapp.R
-import com.example.cookingapp.constant.OnFavouriteBlogClickListener
 import com.example.cookingapp.model.BlogData
-import com.example.cookingapp.preferences.MyPreferences
 import com.example.cookingapp.preferences.MySharedPreferences
-import com.example.cookingapp.repository.BlogRepository
-import com.example.cookingapp.viewmodel.BlogViewModel
-import com.example.cookingapp.viewmodelfactory.BlogViewModelFactory
 
 
 class BlogAdapter(private var context: Context,private var blogList:List<BlogData>): RecyclerView.Adapter<BlogAdapter.MyViewHolder>()
@@ -109,19 +102,5 @@ class BlogAdapter(private var context: Context,private var blogList:List<BlogDat
        val textViewBlogTitle:TextView=itemView.findViewById(R.id.tv_blogTitle)
        val textViewBlogDescription:TextView=itemView.findViewById(R.id.tv_blogDescription)
        val imageViewFavourite:ImageView=itemView.findViewById(R.id.iv_blogFavourite)
-    }
-
-    companion object
-    {
-        private val BLOG_FAVOURITES=object : DiffUtil.ItemCallback<BlogData>()
-        {
-            override fun areItemsTheSame(oldItem: BlogData, newItem: BlogData): Boolean {
-              return oldItem.id==newItem.id
-            }
-
-            override fun areContentsTheSame(oldItem: BlogData, newItem: BlogData): Boolean {
-               return oldItem==newItem
-            }
-        }
     }
 }
