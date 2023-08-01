@@ -17,7 +17,7 @@ import com.example.cookingapp.constant.Constant
     var isFavourite:Boolean=false)
 
  {
-  @PrimaryKey (autoGenerate = true)
-  var id:Int = 0
+  @PrimaryKey(autoGenerate = true)
+  var id:Int=0
   }
 

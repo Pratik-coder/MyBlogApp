@@ -5,7 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.cookingapp.model.BlogData
-
+import com.example.cookingapp.model.FavouriteBlogData
 
 
 @Database(entities = [BlogData::class], version = 3, exportSchema = false)
@@ -13,7 +13,7 @@ import com.example.cookingapp.model.BlogData
 abstract class BlogDatabase:RoomDatabase()
 {
     abstract fun blogDao():BlogDao
-  //  abstract fun favBlogDao():FavouriteBlogDao
+    //abstract fun favBlogDao():FavouriteBlogDao
 
 
     companion object

@@ -15,6 +15,7 @@ import com.example.cookingapp.R
 import com.example.cookingapp.activity.DashboardActivity
 import com.example.cookingapp.adapter.FavouriteAdapter
 import com.example.cookingapp.model.BlogData
+import com.example.cookingapp.model.FavouriteBlogData
 import com.example.cookingapp.repository.BlogRepository
 import com.example.cookingapp.viewmodel.BlogViewModel
 import com.example.cookingapp.viewmodelfactory.BlogViewModelFactory
@@ -37,6 +38,7 @@ class FavouritesFragment : Fragment() {
     private lateinit var blogViewModel: BlogViewModel
     private  var blogRepository: BlogRepository = BlogRepository()
     private lateinit var favouriteAdapter: FavouriteAdapter
+
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -69,7 +71,7 @@ class FavouritesFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         val activity=activity as DashboardActivity
         blogViewModel= ViewModelProvider(this, BlogViewModelFactory(blogRepository)).get(BlogViewModel::class.java)
-        blogViewModel.getAllFavouriteBlogs(activity,true)?.observe(activity,Observer<List<BlogData>>
+        blogViewModel.getAllFavouriteBlogs(activity).observe(activity,Observer<List<BlogData>>
         {
             if (it!=null)
             {
@@ -82,7 +84,6 @@ class FavouritesFragment : Fragment() {
                 Toast.makeText(activity,"No Favourites",Toast.LENGTH_SHORT).show()
             }
         })
-
     }
 
 

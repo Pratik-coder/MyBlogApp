@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cookingapp.model.BlogData
+import com.example.cookingapp.model.FavouriteBlogData
 import com.example.cookingapp.preferences.MySharedPreferences
 import com.example.cookingapp.repository.BlogRepository
 import kotlinx.coroutines.launch
@@ -14,7 +15,7 @@ import javax.inject.Inject
 class BlogViewModel @Inject constructor (private val blogRepository: BlogRepository):ViewModel()
 {
     var blogList:LiveData<List<BlogData>>?=null
-    private lateinit var mySharedPreferences: MySharedPreferences
+
 
 
     fun getAllBlogs(context: Context): LiveData<List<BlogData>>
@@ -40,13 +41,9 @@ class BlogViewModel @Inject constructor (private val blogRepository: BlogReposit
     }
 
 
-    fun getAllFavouriteBlogs(context: Context,isFavourite:Boolean): LiveData<List<BlogData>>?
+    fun getAllFavouriteBlogs(context: Context): LiveData<List<BlogData>>
     {
-        /*mySharedPreferences=MySharedPreferences()
-        mySharedPreferences.getFavouriteBlogs(context)*/
-        if (isFavourite) {
-            blogRepository.getFavouriteBlogs(context, isFavourite = true)
-        }
-        return blogList
+            blogList=blogRepository.getFavouriteBlogs(context)
+            return blogList as LiveData<List<BlogData>>
     }
 }

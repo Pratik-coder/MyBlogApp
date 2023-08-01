@@ -20,7 +20,6 @@ interface BlogDao
      suspend fun addToFavourite(blogData: BlogData)
 
 
-    @Query("SELECT * FROM ${Constant.DATABASE_NAME} WHERE  isFavourite=:isFavourite")
-    fun getFavouriteBlogList(isFavourite:Boolean):LiveData<List<BlogData>>
-
+    @Query("SELECT * FROM ${Constant.DATABASE_NAME} WHERE  isFavourite = 1")
+    fun getFavouriteBlogList():LiveData<List<BlogData>>
 }

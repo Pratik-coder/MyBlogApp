@@ -1,4 +1,4 @@
-/*
+
 
 package com.example.cookingapp.model
 
@@ -8,10 +8,10 @@ import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import com.example.cookingapp.constant.Constant
 
-@Entity(tableName = Constant.FAVOURITE_DATABASEBLOGS, foreignKeys = [ForeignKey(entity = BlogData::class, parentColumns = ["id"], childColumns = ["favBlogId"])])
+@Entity(tableName = Constant.FAVOURITE_DATABASEBLOGS)
 data class FavouriteBlogData(
     @PrimaryKey(autoGenerate = true)
-    var favBlogId:Int = 0,
+    var favBlogId:Int,
     @ColumnInfo(name = "favBlogTitle")
     var favBlogTitle:String,
     @ColumnInfo(name = "favBlogDescription")
@@ -21,11 +21,11 @@ data class FavouriteBlogData(
     @ColumnInfo(name="isFavourite")
     var isFavourite:Boolean=true
 )
-*/
+
 /*{
     @PrimaryKey(autoGenerate = true)
     var favBlogId:Int = 0
-}*//*
+}*/
 
 
-*/
+

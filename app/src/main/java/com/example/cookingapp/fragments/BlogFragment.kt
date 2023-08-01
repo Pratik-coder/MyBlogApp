@@ -54,7 +54,7 @@ class BlogFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
 
-        val view= inflater.inflate(R.layout.fragment_blog, container, false)
+         val view= inflater.inflate(R.layout.fragment_blog, container, false)
          return view
     }
 

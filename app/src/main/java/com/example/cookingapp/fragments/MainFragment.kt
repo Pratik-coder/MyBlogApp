@@ -40,15 +40,10 @@ class MainFragment : Fragment(){
     private  var blogRepository: BlogRepository = BlogRepository()
     private lateinit var blogAdapter:BlogAdapter
     private lateinit var textViewNoBlog:TextView
-    lateinit var mySharedPreferences: MySharedPreferences
-    private lateinit var blogData:BlogData
-
-
 
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-
     }
 
 
@@ -58,6 +53,7 @@ class MainFragment : Fragment(){
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }*/
+
     }
 
     override fun onCreateView(
@@ -87,8 +83,8 @@ class MainFragment : Fragment(){
             {
                 override fun OnFavouriteBlogClick(blogData: BlogData) {
 
-                      blogViewModel.MarkBlogAsFavourite(activity,blogData)
-                     Toast.makeText(activity,"Blog Added To Favourites",Toast.LENGTH_SHORT).show()
+                      blogViewModel.MarkBlogAsFavourite(requireActivity(),blogData)
+                      Toast.makeText(activity,"Blog Added To Favourites",Toast.LENGTH_SHORT).show()
                 }
             })
         })
@@ -98,7 +94,7 @@ class MainFragment : Fragment(){
     override fun onActivityCreated(savedInstanceState: Bundle?)
     {
         super.onActivityCreated(savedInstanceState)
-        /*val activity=activity as DashboardActivity
+      /*  val activity=activity as DashboardActivity
         recyclerViewBlogList.layoutManager = LinearLayoutManager(activity)
         blogViewModel=ViewModelProvider(this,BlogViewModelFactory(blogRepository)).get(BlogViewModel::class.java)
         blogViewModel.getAllBlogs(activity).observe(activity, Observer<List<BlogData>> {
