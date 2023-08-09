@@ -53,8 +53,8 @@ class BlogFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-
          val view= inflater.inflate(R.layout.fragment_blog, container, false)
+        blogViewModel=ViewModelProvider(this,BlogViewModelFactory(blogRepository)).get(BlogViewModel::class.java)
          return view
     }
 
@@ -62,7 +62,6 @@ class BlogFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        blogViewModel=ViewModelProvider(this,BlogViewModelFactory(blogRepository)).get(BlogViewModel::class.java)
         etblogTitle=view.findViewById(R.id.et_blogtitle)
         etblogDescription=view.findViewById(R.id.et_blogdescription)
         etblogPlace=view.findViewById(R.id.et_blogplace)
@@ -82,9 +81,6 @@ class BlogFragment : Fragment() {
                     blogViewModel.AddBlog(requireActivity(),strBlogTitle,strBlogDescription,strBlogPlace)
                     Toast.makeText(activity,"Details Added Successfully",Toast.LENGTH_SHORT).show()
                     ClearBlog()
-                /* Log.d("TAG",strBlogTitle)
-                 Log.d("TAG",strBlogDescription)
-                 Log.d("TAG",strBlogPlace)*/
             }
         }
 

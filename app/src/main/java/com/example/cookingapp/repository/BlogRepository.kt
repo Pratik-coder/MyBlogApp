@@ -13,6 +13,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class BlogRepository
 {
@@ -22,7 +23,7 @@ class BlogRepository
             return BlogDatabase.getDatabase(context)
         }
 
-        fun getAllBlogList(context: Context): LiveData<List<BlogData>> {
+        fun getAllBlogList(context: Context):LiveData<List<BlogData>> {
             blogDatabase = initializeDatabase(context)
             return blogDatabase.blogDao().getBlogList()
         }
@@ -40,7 +41,8 @@ class BlogRepository
      fun updateList(context: Context,blogData: BlogData)
     {
         blogDatabase=initializeDatabase(context)
-        CoroutineScope(Main).launch {blogDatabase.blogDao().addToFavourite(blogData)
+        CoroutineScope(Main).launch {
+            blogDatabase.blogDao().addToFavourite(blogData)
         }
      }
 
@@ -50,5 +52,14 @@ class BlogRepository
     {
         blogDatabase=initializeDatabase(context)
         return blogDatabase.blogDao().getFavouriteBlogList()
+    }
+
+    suspend fun updateToFavourite(context: Context,blogData: BlogData)        //To be implemented for favourite issue
+    {
+        blogDatabase=initializeDatabase(context)
+        withContext(Dispatchers.IO)
+        {
+            blogDatabase.blogDao().addToFavourite(blogData)
+        }
     }
 }

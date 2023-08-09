@@ -16,9 +16,8 @@ interface BlogDao
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertBlog(blogData: BlogData)
 
-      @Update
-     suspend fun addToFavourite(blogData: BlogData)
-
+    @Update
+    suspend fun addToFavourite(blogData: BlogData)
 
     @Query("SELECT * FROM ${Constant.DATABASE_NAME} WHERE  isFavourite = 1")
     fun getFavouriteBlogList():LiveData<List<BlogData>>

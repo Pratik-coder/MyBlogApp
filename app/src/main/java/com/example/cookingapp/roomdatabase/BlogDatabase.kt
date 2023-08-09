@@ -8,13 +8,11 @@ import com.example.cookingapp.model.BlogData
 import com.example.cookingapp.model.FavouriteBlogData
 
 
-@Database(entities = [BlogData::class], version = 3, exportSchema = false)
+@Database(entities = [BlogData::class], version = 5, exportSchema = false)
 
 abstract class BlogDatabase:RoomDatabase()
 {
     abstract fun blogDao():BlogDao
-    //abstract fun favBlogDao():FavouriteBlogDao
-
 
     companion object
     {

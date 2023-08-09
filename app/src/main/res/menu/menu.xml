@@ -5,7 +5,7 @@
    <item
        android:id="@+id/nav_home"
        android:icon="@drawable/ic_baseline_home_24"
-       android:title="@string/str_home" />
+       android:title="@string/str_home"/>
 
     <item
         android:id="@+id/nav_addblog"
@@ -15,7 +15,7 @@
     <item
         android:id="@+id/nav_addfaourited"
         android:icon="@drawable/ic_baseline_favorite_24"
-        android:title="@string/str_favourites" />
+        android:title="@string/str_favourites"/>
 
 
    <!-- <item

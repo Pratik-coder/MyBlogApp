@@ -1,11 +1,13 @@
 package com.example.cookingapp.fragments
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -38,10 +40,12 @@ class FavouritesFragment : Fragment() {
     private lateinit var blogViewModel: BlogViewModel
     private  var blogRepository: BlogRepository = BlogRepository()
     private lateinit var favouriteAdapter: FavouriteAdapter
+    private lateinit var textViewNoFavourites:TextView
 
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
+
     }
 
 
@@ -53,23 +57,40 @@ class FavouritesFragment : Fragment() {
         }
     }
 
+    @SuppressLint("MissingInflatedId")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         val view= inflater.inflate(R.layout.fragment_favourites, container, false)
+        textViewNoFavourites=view.findViewById(R.id.tv_nofavblog)
         recyclerViewFavouriteBlog=view.findViewById(R.id.rv_favouriteBlogList)
+        blogViewModel= ViewModelProvider(this, BlogViewModelFactory(blogRepository)).get(BlogViewModel::class.java)
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val activity=activity as DashboardActivity
+        blogViewModel.getAllFavouriteBlogs(activity).observe(activity, Observer<List<BlogData>> {
+            if (it.isEmpty())
+            {
+                textViewNoFavourites.visibility=View.VISIBLE
+            }
+            else
+            {
+                textViewNoFavourites.visibility=View.GONE
+                favouriteAdapter=FavouriteAdapter(activity,it)
+                recyclerViewFavouriteBlog.layoutManager=LinearLayoutManager(activity,LinearLayoutManager.VERTICAL,false)
+                recyclerViewFavouriteBlog.adapter=favouriteAdapter
+            }
+        })
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
+    /*override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val activity=activity as DashboardActivity
+       val activity=activity as DashboardActivity
         blogViewModel= ViewModelProvider(this, BlogViewModelFactory(blogRepository)).get(BlogViewModel::class.java)
         blogViewModel.getAllFavouriteBlogs(activity).observe(activity,Observer<List<BlogData>>
         {
@@ -84,7 +105,7 @@ class FavouritesFragment : Fragment() {
                 Toast.makeText(activity,"No Favourites",Toast.LENGTH_SHORT).show()
             }
         })
-    }
+    }*/
 
 
     override fun onStart() {
@@ -140,6 +161,5 @@ class FavouritesFragment : Fragment() {
                 }
             }
     }*/
-
 
 }
