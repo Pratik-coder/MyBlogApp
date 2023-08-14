@@ -38,28 +38,16 @@ class BlogRepository
         }
     }
 
-     fun updateList(context: Context,blogData: BlogData)
-    {
-        blogDatabase=initializeDatabase(context)
-        CoroutineScope(Main).launch {
-            blogDatabase.blogDao().addToFavourite(blogData)
-        }
+     fun updateList(context: Context,blogData: BlogData) {
+         blogDatabase = initializeDatabase(context)
+         CoroutineScope(Main).launch {
+             blogDatabase.blogDao().addToFavourite(blogData)
+         }
      }
-
-
 
     fun getFavouriteBlogs(context: Context):LiveData<List<BlogData>>
     {
         blogDatabase=initializeDatabase(context)
         return blogDatabase.blogDao().getFavouriteBlogList()
-    }
-
-    suspend fun updateToFavourite(context: Context,blogData: BlogData)        //To be implemented for favourite issue
-    {
-        blogDatabase=initializeDatabase(context)
-        withContext(Dispatchers.IO)
-        {
-            blogDatabase.blogDao().addToFavourite(blogData)
-        }
     }
 }

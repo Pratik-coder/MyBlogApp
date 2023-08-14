@@ -24,8 +24,8 @@ class DashboardActivity : AppCompatActivity()
         setContentView(R.layout.activity_dashboard)
         bottomNavigationView=findViewById(R.id.bottomNavigationView)
         loadFragment(MainFragment.newInstance())
-      //  getFragmentByName()
-        getFragmentByClick()
+        getFragmentByName()
+        //getFragmentByClick()
     }
 
 

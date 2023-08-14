@@ -3,10 +3,12 @@ package com.example.cookingapp.fragments
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.Observer
@@ -43,7 +45,8 @@ class MainFragment : Fragment(){
     private  var blogRepository: BlogRepository = BlogRepository()
     private lateinit var blogAdapter:BlogAdapter
     private lateinit var textViewNoBlog:TextView
-    private lateinit var mySharedPreferences: MySharedPreferences
+
+
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -63,6 +66,7 @@ class MainFragment : Fragment(){
         super.onStart()
     }
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -77,30 +81,34 @@ class MainFragment : Fragment(){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val activity=activity as DashboardActivity
-        mySharedPreferences= MySharedPreferences()
-        blogViewModel.getAllBlogs(activity).observe(activity, Observer<List<BlogData>> {
-            if (it.isEmpty())
-            {
-                textViewNoBlog.visibility=View.VISIBLE
-            }
-            else
-            {
-                textViewNoBlog.visibility=View.GONE
-                blogAdapter= BlogAdapter(activity,it)
-                recyclerViewBlogList.layoutManager=LinearLayoutManager(requireActivity(),LinearLayoutManager.VERTICAL,false)
-                recyclerViewBlogList.adapter=blogAdapter
 
-                blogAdapter.setOnFavouriteClickListener(object : BlogAdapter.OnFavouriteImageClick {
+              setObservers()
+    }
+
+    private fun setObservers()
+    {
+        val activity=activity as DashboardActivity
+        blogViewModel.getAllBlogs(activity).observe(activity, Observer<List<BlogData>> {
+            if (it.isEmpty()) {
+                textViewNoBlog.visibility = View.VISIBLE
+            } else {
+                textViewNoBlog.visibility = View.GONE
+                blogAdapter = BlogAdapter(activity, it)
+                recyclerViewBlogList.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+                recyclerViewBlogList.adapter = blogAdapter
+                //  Log.d("TAG",it.toString())
+                blogAdapter.setOnFavouriteClickListener(object :
+                    BlogAdapter.OnFavouriteImageClick {
                     override fun OnFavouriteBlogClick(blogData: BlogData) {
                         blogViewModel.MarkBlogAsFavourite(requireActivity(), blogData)
-                        Toast.makeText(activity, "Blog Added To Favourites", Toast.LENGTH_SHORT)
-                            .show()
+                        Toast.makeText(activity, "Blog Added To Favourites", Toast.LENGTH_SHORT).show()
                     }
                 })
             }
+
         })
     }
+
 
 
    /* override fun onActivityCreated(savedInstanceState: Bundle?)
@@ -129,16 +137,11 @@ class MainFragment : Fragment(){
         })
     }*/
 
-
-
-
-    @SuppressLint("NotifyDataSetChanged")
     override fun onResume() {
         super.onResume()
-        /*val blogList: MutableList<BlogData> = mutableListOf()
-        blogAdapter=BlogAdapter(requireActivity(),blogList)
-        blogAdapter.notifyDataSetChanged()*/
+
     }
+
 
 
     override fun onPause() {
@@ -157,6 +160,7 @@ class MainFragment : Fragment(){
     override fun onDestroy() {
         super.onDestroy()
     }
+
 
     override fun onDetach() {
         super.onDetach()

@@ -32,20 +32,17 @@ class BlogAdapter(private var context: Context,private var blogList:List<BlogDat
     }
 
 
-    @SuppressLint("NotifyDataSetChanged")
+
+
     override fun onBindViewHolder(holder: MyViewHolder, position: Int)
     {
-        mySharedPreferences=MySharedPreferences()
+        mySharedPreferences=MySharedPreferences(context)
         val blogData=blogList[position]
         holder.textViewBlogTitle.text=blogData.title
         holder.textViewBlogDescription.text=blogData.description
+        holder.imageViewFavourite.setImageResource(if(blogData.isFavourite)R.drawable.ic_baseline_favorite_24 else R.drawable.ic_baseline_favorite_border_24)
         holder.imageViewFavourite.setOnClickListener {
-                if(!blogData.isFavourite){
-                    onFavouriteClickListener.OnFavouriteBlogClick(blogData)
-                    blogData.isFavourite = true
-                    holder.imageViewFavourite.setBackgroundResource(R.drawable.ic_baseline_favorite_24)
-                    notifyItemChanged(position)
-                }
+            onFavouriteClickListener.OnFavouriteBlogClick(blogData)
         }
     }
 

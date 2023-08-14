@@ -40,7 +40,8 @@
                 android:layout_height="30dp"
                 android:layout_weight="0.15"
                 android:layout_marginRight="5dp"
-                android:src="@drawable/ic_baseline_delete_24"/>
+                android:src="@drawable/ic_baseline_delete_24"
+                android:visibility="gone"/>
 
         </LinearLayout>
 

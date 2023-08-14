@@ -10,7 +10,7 @@ import com.example.cookingapp.model.BlogData
 @Dao
 interface BlogDao
 {
-    @Query("SELECT * FROM ${Constant.DATABASE_NAME}")
+     @Query("SELECT * FROM ${Constant.DATABASE_NAME}")
      fun getBlogList(): LiveData<List<BlogData>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
