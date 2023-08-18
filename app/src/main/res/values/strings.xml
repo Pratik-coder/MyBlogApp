@@ -12,6 +12,10 @@
     <string name="str_nameoftheplace">Enter Name of the Place</string>
     <string name="str_noblog">Oh! It think that you have no blog,please add some blog</string>
     <string name="str_nofavouriteblog">Oh! It think that you have not added any blogs to favourite</string>
+    <string name="str_FavouriteTitle">Delete</string>
+    <string name="str_deletefavouriteiconAlert">Are you sure you want to remove the blog from favourite</string>
+    <string name="str_yes">Yes</string>
+    <string name="str_no">No</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

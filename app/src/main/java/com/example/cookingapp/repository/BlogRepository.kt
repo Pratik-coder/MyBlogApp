@@ -1,9 +1,11 @@
 package com.example.cookingapp.repository
 
 import android.content.Context
+import android.content.LocusId
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.example.cookingapp.fragments.FavouritesFragment
 import com.example.cookingapp.model.BlogData
 import com.example.cookingapp.model.FavouriteBlogData
 import com.example.cookingapp.preferences.MySharedPreferences
@@ -25,7 +27,7 @@ class BlogRepository
 
         fun getAllBlogList(context: Context):LiveData<List<BlogData>> {
             blogDatabase = initializeDatabase(context)
-            return blogDatabase.blogDao().getBlogList()
+            return blogDatabase.blogDao().getAllBlogs()
         }
 
 
@@ -41,13 +43,20 @@ class BlogRepository
      fun updateList(context: Context,blogData: BlogData) {
          blogDatabase = initializeDatabase(context)
          CoroutineScope(Main).launch {
-             blogDatabase.blogDao().addToFavourite(blogData)
+             blogDatabase.blogDao().addToFavourites(blogData)
          }
      }
 
-    fun getFavouriteBlogs(context: Context):LiveData<List<BlogData>>
+    fun getFavouriteBlogs(context: Context):LiveData<MutableList<BlogData>>
     {
         blogDatabase=initializeDatabase(context)
-        return blogDatabase.blogDao().getFavouriteBlogList()
+        return blogDatabase.blogDao().getFavouriteBlogs()
     }
+
+     fun deleteFavouriteBlog(context:Context,id:Int,isFavourite:Boolean) {
+        blogDatabase = initializeDatabase(context)
+        CoroutineScope(Main).launch {
+            blogDatabase.blogDao().updateFavouriteStatus(id,isFavourite)
+        }
+     }
 }

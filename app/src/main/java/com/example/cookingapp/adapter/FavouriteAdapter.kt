@@ -12,8 +12,9 @@ import com.example.cookingapp.R
 import com.example.cookingapp.model.BlogData
 import com.example.cookingapp.model.FavouriteBlogData
 
-class FavouriteAdapter(private var context: Context,private var favouriteBlogList: List<BlogData>) :RecyclerView.Adapter<FavouriteAdapter.MyViewHolder>()
+class FavouriteAdapter(private var context: Context,private var favouriteBlogList: MutableList<BlogData>) :RecyclerView.Adapter<FavouriteAdapter.MyViewHolder>()
 {
+    private lateinit var onDeleteFavouriteBlogClick: OnDeleteFavouriteBlogClick
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder
     {
@@ -23,16 +24,49 @@ class FavouriteAdapter(private var context: Context,private var favouriteBlogLis
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int)
     {
-
         val favouriteBlogData=favouriteBlogList[position]
         holder.textViewFavouriteBlogTitle.text =favouriteBlogData.title
         holder.textViewFavouriteBlogPlace.text =favouriteBlogData.place
+        holder.imageViewDelete.setOnClickListener {
+            onDeleteFavouriteBlogClick.deleteFavouriteFromList(favouriteBlogData.id)
+
+        }
     }
+
+    fun ClearAllBlog()
+    {
+        favouriteBlogList.clear()
+        notifyDataSetChanged()
+    }
+
+    /*fun updateFavBlogList(blogData: BlogData)
+    {
+        if (favouriteBlogList.isNotEmpty() *//*&& favouriteBlogList.contains(blogData)*//*)
+        {
+           // (favouriteBlogList as MutableList<BlogData>).remove(blogData)
+            favouriteBlogList as MutableList<BlogData>
+            (favouriteBlogList as MutableList<BlogData>).add(blogData)
+            (favouriteBlogList as MutableList<BlogData>).clear()
+            notifyDataSetChanged()
+        }
+    }*/
 
     override fun getItemCount(): Int
     {
       return favouriteBlogList.size
     }
+
+
+    interface OnDeleteFavouriteBlogClick
+    {
+        fun deleteFavouriteFromList(favBlogId:Int)
+    }
+
+    fun setOnFavouriteIconDelete(listener:OnDeleteFavouriteBlogClick)
+    {
+        this.onDeleteFavouriteBlogClick=listener
+    }
+
 
     class MyViewHolder(itemView:View):RecyclerView.ViewHolder(itemView)
     {
@@ -40,6 +74,5 @@ class FavouriteAdapter(private var context: Context,private var favouriteBlogLis
        val textViewFavouriteBlogTitle:TextView=itemView.findViewById(R.id.tv_favouriteblogTitle)
        val textViewFavouriteBlogPlace:TextView=itemView.findViewById(R.id.tv_favouriteblogPlace)
        val imageViewDelete:ImageView=itemView.findViewById(R.id.iv_deleteFavourite)
-
     }
 }

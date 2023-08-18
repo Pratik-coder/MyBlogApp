@@ -27,7 +27,7 @@ abstract class BlogDatabase:RoomDatabase()
                 val instance=Room.databaseBuilder(
                     context.applicationContext,BlogDatabase::class.java,"BlogDatabase.db"
                 ).fallbackToDestructiveMigration()
-                    .addMigrations()
+                   // .addMigrations()
                     .build()
                 INSTANCE=instance
                 instance

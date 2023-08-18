@@ -17,6 +17,7 @@ import javax.inject.Inject
 class BlogViewModel @Inject constructor (private val blogRepository: BlogRepository):ViewModel()
 {
     var blogList:LiveData<List<BlogData>>?=null
+    var favBlogList:LiveData<MutableList<BlogData>>?=null
     private val blogFavourite=MutableLiveData<Boolean>()
 
     val blogAsFavourite:LiveData<Boolean>
@@ -44,9 +45,18 @@ class BlogViewModel @Inject constructor (private val blogRepository: BlogReposit
         }
     }
 
-    fun getAllFavouriteBlogs(context: Context): LiveData<List<BlogData>>
+    fun getAllFavouriteBlogs(context: Context): LiveData<MutableList<BlogData>>
     {
-            blogList=blogRepository.getFavouriteBlogs(context)
-            return blogList as LiveData<List<BlogData>>
+           /* blogList=blogRepository.getFavouriteBlogs(context)
+            return blogList as LiveData<List<BlogData>>*/
+          favBlogList=blogRepository.getFavouriteBlogs(context)
+          return favBlogList as LiveData<MutableList<BlogData>>
     }
+
+         fun deleteByFavourite(context: Context, id:Int, isFavourite:Boolean)
+          {
+              viewModelScope.launch {
+                  blogRepository.deleteFavouriteBlog(context, id, isFavourite)
+              }
+         }
 }

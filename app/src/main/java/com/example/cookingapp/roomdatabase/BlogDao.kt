@@ -11,14 +11,17 @@ import com.example.cookingapp.model.BlogData
 interface BlogDao
 {
      @Query("SELECT * FROM ${Constant.DATABASE_NAME}")
-     fun getBlogList(): LiveData<List<BlogData>>
+     fun getAllBlogs(): LiveData<List<BlogData>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertBlog(blogData: BlogData)
 
     @Update
-    suspend fun addToFavourite(blogData: BlogData)
+    suspend fun addToFavourites(blogData: BlogData)
 
     @Query("SELECT * FROM ${Constant.DATABASE_NAME} WHERE  isFavourite = 1")
-    fun getFavouriteBlogList():LiveData<List<BlogData>>
+    fun getFavouriteBlogs():LiveData<MutableList<BlogData>>
+
+    @Query("UPDATE ${Constant.DATABASE_NAME} SET isFavourite = :isFavourite WHERE id=:id")
+    suspend fun updateFavouriteStatus(id:Int,isFavourite:Boolean)
 }

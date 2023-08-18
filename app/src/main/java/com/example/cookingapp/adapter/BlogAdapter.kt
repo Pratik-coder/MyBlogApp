@@ -23,7 +23,7 @@ import com.example.cookingapp.viewmodelfactory.BlogViewModelFactory
 class BlogAdapter(private var context: Context,private var blogList:List<BlogData>): RecyclerView.Adapter<BlogAdapter.MyViewHolder>()
 {
     private lateinit var onFavouriteClickListener:OnFavouriteImageClick
-    private lateinit var mySharedPreferences:MySharedPreferences
+
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -36,7 +36,6 @@ class BlogAdapter(private var context: Context,private var blogList:List<BlogDat
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int)
     {
-        mySharedPreferences=MySharedPreferences(context)
         val blogData=blogList[position]
         holder.textViewBlogTitle.text=blogData.title
         holder.textViewBlogDescription.text=blogData.description

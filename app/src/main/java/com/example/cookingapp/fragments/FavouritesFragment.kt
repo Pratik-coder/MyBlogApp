@@ -1,16 +1,20 @@
 package com.example.cookingapp.fragments
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
+import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cookingapp.R
@@ -45,7 +49,6 @@ class FavouritesFragment : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-
     }
 
 
@@ -57,7 +60,7 @@ class FavouritesFragment : Fragment() {
         }
     }
 
-    @SuppressLint("MissingInflatedId")
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -66,24 +69,72 @@ class FavouritesFragment : Fragment() {
         val view= inflater.inflate(R.layout.fragment_favourites, container, false)
         textViewNoFavourites=view.findViewById(R.id.tv_nofavblog)
         recyclerViewFavouriteBlog=view.findViewById(R.id.rv_favouriteBlogList)
+        recyclerViewFavouriteBlog.layoutManager=LinearLayoutManager(activity,LinearLayoutManager.VERTICAL,false)
         blogViewModel= ViewModelProvider(this, BlogViewModelFactory(blogRepository)).get(BlogViewModel::class.java)
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setObservers()
+    }
+
+    override fun onStart() {
+        super.onStart()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setObservers()
+    }
+
+
+    private fun setObservers()
+    {
         val activity=activity as DashboardActivity
-        blogViewModel.getAllFavouriteBlogs(activity).observe(activity, Observer<List<BlogData>> {
-            if (it.isEmpty())
-            {
-                textViewNoFavourites.visibility=View.VISIBLE
-            }
-            else
+        blogViewModel.getAllFavouriteBlogs(activity).observe(activity, Observer<MutableList<BlogData>> {
+            if (it.isNotEmpty() && it!=null)
             {
                 textViewNoFavourites.visibility=View.GONE
                 favouriteAdapter=FavouriteAdapter(activity,it)
-                recyclerViewFavouriteBlog.layoutManager=LinearLayoutManager(activity,LinearLayoutManager.VERTICAL,false)
                 recyclerViewFavouriteBlog.adapter=favouriteAdapter
+                showDeleteFavouriteAlert()
+            }
+            else
+            {
+                textViewNoFavourites.visibility=View.VISIBLE
+            }
+        })
+    }
+
+    private fun showDeleteFavouriteAlert()
+    {
+        favouriteAdapter.setOnFavouriteIconDelete(object :FavouriteAdapter.OnDeleteFavouriteBlogClick
+        {
+
+            override fun deleteFavouriteFromList(favBlogId: Int)
+            {
+                val alertDialogBuilder=AlertDialog.Builder(requireContext())
+                    alertDialogBuilder.setTitle(getString(R.string.str_FavouriteTitle))
+                    .setMessage(getString(R.string.str_deletefavouriteiconAlert))
+                    .setCancelable(false)
+                    .setPositiveButton(getString(R.string.str_yes))
+                    {
+                            dialogInterface,_->
+                        dialogInterface.dismiss()
+                        blogViewModel.deleteByFavourite(requireActivity(),favBlogId,false)
+                        Toast.makeText(requireActivity(),"Blog removed from favourite successfully",Toast.LENGTH_SHORT).show()
+                        favouriteAdapter.ClearAllBlog()
+                    }
+                    .setNegativeButton(getString(R.string.str_no))
+                    {
+                            dialogInterface,_->
+                        {
+                            dialogInterface.dismiss()
+                        }
+                    }
+                alertDialogBuilder.create()
+                alertDialogBuilder.show()
             }
         })
     }
@@ -106,17 +157,6 @@ class FavouritesFragment : Fragment() {
             }
         })
     }*/
-
-
-    override fun onStart() {
-        super.onStart()
-    }
-
-
-
-    override fun onResume() {
-        super.onResume()
-    }
 
     override fun onPause() {
         super.onPause()
