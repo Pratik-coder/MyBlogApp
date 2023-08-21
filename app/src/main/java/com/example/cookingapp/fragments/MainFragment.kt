@@ -101,7 +101,7 @@ class MainFragment : Fragment(){
                     BlogAdapter.OnFavouriteImageClick {
                     override fun OnFavouriteBlogClick(blogData: BlogData) {
                         blogViewModel.MarkBlogAsFavourite(requireActivity(), blogData)
-                        Toast.makeText(activity, "Blog Added To Favourites", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(activity,getString(R.string.str_addBlogToFavourite), Toast.LENGTH_SHORT).show()
                     }
                 })
             }
@@ -138,7 +138,7 @@ class MainFragment : Fragment(){
 
     override fun onResume() {
         super.onResume()
-
+        setObservers()
     }
 
 

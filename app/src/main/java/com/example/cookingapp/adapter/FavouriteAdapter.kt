@@ -29,8 +29,17 @@ class FavouriteAdapter(private var context: Context,private var favouriteBlogLis
         holder.textViewFavouriteBlogPlace.text =favouriteBlogData.place
         holder.imageViewDelete.setOnClickListener {
             onDeleteFavouriteBlogClick.deleteFavouriteFromList(favouriteBlogData.id)
-
         }
+    }
+
+    fun removeBlogFromFavourites(position:Int)
+    {
+        if(position in 0 until favouriteBlogList.size)
+        {
+            favouriteBlogList.removeAt(position)
+            notifyItemRemoved(position)
+        }
+        ClearAllBlog()
     }
 
     fun ClearAllBlog()
@@ -39,17 +48,6 @@ class FavouriteAdapter(private var context: Context,private var favouriteBlogLis
         notifyDataSetChanged()
     }
 
-    /*fun updateFavBlogList(blogData: BlogData)
-    {
-        if (favouriteBlogList.isNotEmpty() *//*&& favouriteBlogList.contains(blogData)*//*)
-        {
-           // (favouriteBlogList as MutableList<BlogData>).remove(blogData)
-            favouriteBlogList as MutableList<BlogData>
-            (favouriteBlogList as MutableList<BlogData>).add(blogData)
-            (favouriteBlogList as MutableList<BlogData>).clear()
-            notifyDataSetChanged()
-        }
-    }*/
 
     override fun getItemCount(): Int
     {

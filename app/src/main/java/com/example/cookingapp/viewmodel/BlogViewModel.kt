@@ -18,10 +18,7 @@ class BlogViewModel @Inject constructor (private val blogRepository: BlogReposit
 {
     var blogList:LiveData<List<BlogData>>?=null
     var favBlogList:LiveData<MutableList<BlogData>>?=null
-    private val blogFavourite=MutableLiveData<Boolean>()
 
-    val blogAsFavourite:LiveData<Boolean>
-    get() = blogFavourite
 
     fun getAllBlogs(context: Context):LiveData<List<BlogData>>
     {
@@ -47,8 +44,6 @@ class BlogViewModel @Inject constructor (private val blogRepository: BlogReposit
 
     fun getAllFavouriteBlogs(context: Context): LiveData<MutableList<BlogData>>
     {
-           /* blogList=blogRepository.getFavouriteBlogs(context)
-            return blogList as LiveData<List<BlogData>>*/
           favBlogList=blogRepository.getFavouriteBlogs(context)
           return favBlogList as LiveData<MutableList<BlogData>>
     }

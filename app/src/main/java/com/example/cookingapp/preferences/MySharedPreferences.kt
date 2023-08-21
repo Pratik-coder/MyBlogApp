@@ -17,34 +17,36 @@ import kotlin.coroutines.CoroutineContext
 class MySharedPreferences(context: Context)
 {
     val PREFS_NAME="BLOGAPP"
-    val IS_BLOGFAVOURITE="BLOG_FAVOURITE"
+    val sharedPreferences=context.getSharedPreferences(PREFS_NAME,Context.MODE_PRIVATE)
 
 
-
-
-
-   /* fun loadFavouriteData(context: Context):MutableList<BlogData>
-   {
-       val sharedPreferences:SharedPreferences
-       sharedPreferences=context.getSharedPreferences("MySharedPrefernces",Context.MODE_PRIVATE)
-       val json=sharedPreferences.getString("favouriteItems",null)
-       return if(json!=null)
-       {
-           val type=object :TypeToken<MutableList<BlogData>>(){}.type
-           Gson().fromJson(json,type)
-       }
-       else
-       {
-           mutableListOf()
-       }
-   }
-
-     fun saveData(context: Context)
+    fun setTextTitle(strTextTitle:String)
     {
-        val favouriteBlog= MutableList<BlogData>(0)
-        val sharedPreferences:SharedPreferences
-        sharedPreferences=context.getSharedPreferences("MySharedPrefernces",Context.MODE_PRIVATE)
-        val json=Gson().toJson(favouriteBlog)
-        sharedPreferences.edit().putString("favouriteItems",json).apply()
-    }*/
+        sharedPreferences.edit().putString("strTextTitle",strTextTitle).apply()
+    }
+
+    fun getSaveTitle():String
+    {
+        return sharedPreferences.getString("strTextTitle","")?:""
+    }
+
+    fun setTextDescription(strTextDescription:String)
+    {
+        sharedPreferences.edit().putString("strTextDescription",strTextDescription).apply()
+    }
+
+    fun getSaveDescription(): String
+    {
+        return sharedPreferences.getString("strTextDescription","")?:""
+    }
+
+    fun setTextPlace(strTextPlace:String)
+    {
+        sharedPreferences.edit().putString("strTextPlace",strTextPlace).apply()
+    }
+
+    fun getSavePlace():String
+    {
+        return sharedPreferences.getString("strTextPlace","")?:""
+    }
 }

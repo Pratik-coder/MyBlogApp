@@ -112,6 +112,7 @@ class FavouritesFragment : Fragment() {
         favouriteAdapter.setOnFavouriteIconDelete(object :FavouriteAdapter.OnDeleteFavouriteBlogClick
         {
 
+            @SuppressLint("SuspiciousIndentation")
             override fun deleteFavouriteFromList(favBlogId: Int)
             {
                 val alertDialogBuilder=AlertDialog.Builder(requireContext())
@@ -123,8 +124,8 @@ class FavouritesFragment : Fragment() {
                             dialogInterface,_->
                         dialogInterface.dismiss()
                         blogViewModel.deleteByFavourite(requireActivity(),favBlogId,false)
-                        Toast.makeText(requireActivity(),"Blog removed from favourite successfully",Toast.LENGTH_SHORT).show()
-                        favouriteAdapter.ClearAllBlog()
+                        favouriteAdapter.removeBlogFromFavourites(favBlogId)
+                        Toast.makeText(requireActivity(),getString(R.string.str_removeFromFavourites),Toast.LENGTH_SHORT).show()
                     }
                     .setNegativeButton(getString(R.string.str_no))
                     {

@@ -1,7 +1,9 @@
 package com.example.cookingapp.fragments
 
 import android.app.ProgressDialog
+import android.content.Context
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -14,6 +16,7 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.example.cookingapp.R
 import com.example.cookingapp.model.BlogData
+import com.example.cookingapp.preferences.MySharedPreferences
 import com.example.cookingapp.repository.BlogRepository
 import com.example.cookingapp.roomdatabase.BlogDatabase
 import com.example.cookingapp.viewmodel.BlogViewModel
@@ -39,6 +42,8 @@ class BlogFragment : Fragment() {
     private lateinit var textViewAdd: TextView
     private lateinit var blogViewModel:BlogViewModel
     private  var blogRepository:BlogRepository=BlogRepository()
+    private lateinit var preferences:MySharedPreferences
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,36 +59,57 @@ class BlogFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
          val view= inflater.inflate(R.layout.fragment_blog, container, false)
+        etblogTitle=view.findViewById(R.id.et_blogtitle)
+        etblogDescription=view.findViewById(R.id.et_blogdescription)
+        etblogPlace=view.findViewById(R.id.et_blogplace)
+        textViewAdd=view.findViewById(R.id.tv_addblog)
+        preferences= MySharedPreferences(requireActivity())
         blogViewModel=ViewModelProvider(this,BlogViewModelFactory(blogRepository)).get(BlogViewModel::class.java)
-         return view
+        return view
     }
 
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        etblogTitle=view.findViewById(R.id.et_blogtitle)
-        etblogDescription=view.findViewById(R.id.et_blogdescription)
-        etblogPlace=view.findViewById(R.id.et_blogplace)
-        textViewAdd=view.findViewById(R.id.tv_addblog)
+        setObservers()
+    }
+
+    override fun onStart() {
+        super.onStart()
+    }
+
+
+
+    private fun setObservers()
+    {
         textViewAdd.setOnClickListener {
             val strBlogTitle=etblogTitle.text.toString()
             val strBlogDescription=etblogDescription.text.toString()
             val strBlogPlace=etblogPlace.text.toString()
 
-            if (strBlogTitle.isEmpty()|| strBlogDescription.isEmpty()||strBlogPlace.isEmpty())
+            if (TextUtils.isEmpty(strBlogTitle))
             {
-                Toast.makeText(activity,"Please Fill All The Details",Toast.LENGTH_SHORT).show()
+                Toast.makeText(activity,getString(R.string.str_title),Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
             }
 
-            else
+            if (TextUtils.isEmpty(strBlogDescription))
             {
-                    blogViewModel.AddBlog(requireActivity(),strBlogTitle,strBlogDescription,strBlogPlace)
-                    Toast.makeText(activity,"Details Added Successfully",Toast.LENGTH_SHORT).show()
-                    ClearBlog()
+                Toast.makeText(activity,getString(R.string.str_description),Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
             }
+
+            if (TextUtils.isEmpty(strBlogPlace))
+            {
+                Toast.makeText(activity,getString(R.string.str_place),Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            blogViewModel.AddBlog(requireActivity(),strBlogTitle,strBlogDescription,strBlogPlace)
+            Toast.makeText(activity,getString(R.string.str_blogsuccessfull),Toast.LENGTH_SHORT).show()
+            ClearBlog()
         }
-
     }
 
     private fun ClearBlog()
@@ -93,12 +119,12 @@ class BlogFragment : Fragment() {
         etblogPlace.setText("")
     }
 
-    override fun onStart() {
-        super.onStart()
-    }
 
     override fun onResume() {
         super.onResume()
+        preferences.setTextTitle(etblogTitle.text.toString())
+        preferences.setTextDescription(etblogDescription.text.toString())
+        preferences.setTextPlace(etblogPlace.text.toString())
     }
 
     override fun onPause() {
@@ -111,6 +137,7 @@ class BlogFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
+        ClearBlog()
     }
 
     override fun onDestroyView() {
