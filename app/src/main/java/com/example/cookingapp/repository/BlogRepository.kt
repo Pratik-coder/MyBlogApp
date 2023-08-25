@@ -5,6 +5,7 @@ import android.content.LocusId
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import androidx.room.util.getColumnIndex
 import com.example.cookingapp.fragments.FavouritesFragment
 import com.example.cookingapp.model.BlogData
 import com.example.cookingapp.model.FavouriteBlogData
@@ -59,4 +60,10 @@ class BlogRepository
             blogDatabase.blogDao().updateFavouriteStatus(id,isFavourite)
         }
      }
+
+    fun searchBlogs(context: Context, query:String):LiveData<List<BlogData>>
+    {
+        blogDatabase=initializeDatabase(context)
+        return blogDatabase.blogDao().getBlogsByTitle("%" + query + "%")
+    }
 }

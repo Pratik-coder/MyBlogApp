@@ -69,7 +69,6 @@ class FavouritesFragment : Fragment() {
         val view= inflater.inflate(R.layout.fragment_favourites, container, false)
         textViewNoFavourites=view.findViewById(R.id.tv_nofavblog)
         recyclerViewFavouriteBlog=view.findViewById(R.id.rv_favouriteBlogList)
-        recyclerViewFavouriteBlog.layoutManager=LinearLayoutManager(activity,LinearLayoutManager.VERTICAL,false)
         blogViewModel= ViewModelProvider(this, BlogViewModelFactory(blogRepository)).get(BlogViewModel::class.java)
         return view
     }
@@ -97,6 +96,8 @@ class FavouritesFragment : Fragment() {
             {
                 textViewNoFavourites.visibility=View.GONE
                 favouriteAdapter=FavouriteAdapter(activity,it)
+                val layoutManager=LinearLayoutManager(activity,LinearLayoutManager.VERTICAL,false)
+                recyclerViewFavouriteBlog.layoutManager=layoutManager
                 recyclerViewFavouriteBlog.adapter=favouriteAdapter
                 showDeleteFavouriteAlert()
             }
@@ -139,25 +140,6 @@ class FavouritesFragment : Fragment() {
             }
         })
     }
-
-    /*override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-       val activity=activity as DashboardActivity
-        blogViewModel= ViewModelProvider(this, BlogViewModelFactory(blogRepository)).get(BlogViewModel::class.java)
-        blogViewModel.getAllFavouriteBlogs(activity).observe(activity,Observer<List<BlogData>>
-        {
-            if (it!=null)
-            {
-                favouriteAdapter=FavouriteAdapter(activity,it)
-                recyclerViewFavouriteBlog.layoutManager=LinearLayoutManager(activity,LinearLayoutManager.VERTICAL,false)
-                recyclerViewFavouriteBlog.adapter=favouriteAdapter
-            }
-            else
-            {
-                Toast.makeText(activity,"No Favourites",Toast.LENGTH_SHORT).show()
-            }
-        })
-    }*/
 
     override fun onPause() {
         super.onPause()

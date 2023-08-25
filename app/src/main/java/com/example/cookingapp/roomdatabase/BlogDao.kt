@@ -1,5 +1,6 @@
 package com.example.cookingapp.roomdatabase
 
+import android.renderscript.ScriptIntrinsicYuvToRGB
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.room.*
@@ -24,4 +25,7 @@ interface BlogDao
 
     @Query("UPDATE ${Constant.DATABASE_NAME} SET isFavourite = :isFavourite WHERE id=:id")
     suspend fun updateFavouriteStatus(id:Int,isFavourite:Boolean)
+
+   @Query("SELECT * FROM ${Constant.DATABASE_NAME} WHERE title LIKE :query")
+    fun getBlogsByTitle(query:String):LiveData<List<BlogData>>
 }

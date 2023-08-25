@@ -8,6 +8,58 @@
     tools:context=".fragments.MainFragment">
 
 
+    <ImageView
+        android:id="@+id/iv_Search"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/ic_baseline_search_24"
+        android:layout_gravity="right"
+        android:layout_marginEnd="10dp"
+        android:visibility="gone"/>
+
+
+
+    <LinearLayout
+        android:id="@+id/ll_BlogSearch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+
+    <EditText
+        android:id="@+id/et_searchBlogs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/et_background"
+        android:padding="10dp"
+        android:layout_margin="10dp"
+        android:hint="Search Blogs"/>
+
+
+    </LinearLayout>
+
+
+   <!-- <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:hint="Enter Blogs"
+        android:visibility="gone">
+
+ <com.google.android.material.textfield.TextInputEditText
+     android:id="@+id/textInputEditTextSearch"
+     android:layout_width="match_parent"
+     android:layout_height="wrap_content"
+     android:singleLine="true"/>
+
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+-->
+
+
+
     <TextView
         android:id="@+id/tv_noblog"
         android:layout_width="match_parent"
@@ -26,7 +78,8 @@
         android:id="@+id/rv_blogList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="15dp"/>
+        android:padding="15dp"
+        android:layout_marginTop="60dp"/>
 
 
 

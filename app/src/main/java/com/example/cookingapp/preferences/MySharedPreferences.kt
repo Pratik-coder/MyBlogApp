@@ -17,36 +17,38 @@ import kotlin.coroutines.CoroutineContext
 class MySharedPreferences(context: Context)
 {
     val PREFS_NAME="BLOGAPP"
+    val BLOG_TITLE="strTextTitle"
+    val BLOG_DESCRIPTION="strTextDescription"
+    val BLOG_PLACE="strTextPlace"
     val sharedPreferences=context.getSharedPreferences(PREFS_NAME,Context.MODE_PRIVATE)
-
 
     fun setTextTitle(strTextTitle:String)
     {
-        sharedPreferences.edit().putString("strTextTitle",strTextTitle).apply()
+        sharedPreferences.edit().putString(BLOG_TITLE,strTextTitle).apply()
     }
 
     fun getSaveTitle():String
     {
-        return sharedPreferences.getString("strTextTitle","")?:""
+        return sharedPreferences.getString(BLOG_TITLE,"")?:""
     }
 
     fun setTextDescription(strTextDescription:String)
     {
-        sharedPreferences.edit().putString("strTextDescription",strTextDescription).apply()
+        sharedPreferences.edit().putString(BLOG_DESCRIPTION,strTextDescription).apply()
     }
 
     fun getSaveDescription(): String
     {
-        return sharedPreferences.getString("strTextDescription","")?:""
+        return sharedPreferences.getString(BLOG_DESCRIPTION,"")?:""
     }
 
     fun setTextPlace(strTextPlace:String)
     {
-        sharedPreferences.edit().putString("strTextPlace",strTextPlace).apply()
+        sharedPreferences.edit().putString(BLOG_PLACE,strTextPlace).apply()
     }
 
     fun getSavePlace():String
     {
-        return sharedPreferences.getString("strTextPlace","")?:""
+        return sharedPreferences.getString(BLOG_PLACE,"")?:""
     }
 }

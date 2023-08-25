@@ -19,7 +19,6 @@ class BlogViewModel @Inject constructor (private val blogRepository: BlogReposit
     var blogList:LiveData<List<BlogData>>?=null
     var favBlogList:LiveData<MutableList<BlogData>>?=null
 
-
     fun getAllBlogs(context: Context):LiveData<List<BlogData>>
     {
         blogList=blogRepository.getAllBlogList(context)
@@ -54,4 +53,10 @@ class BlogViewModel @Inject constructor (private val blogRepository: BlogReposit
                   blogRepository.deleteFavouriteBlog(context, id, isFavourite)
               }
          }
+
+   fun getBlogsBySearch(context: Context, query:String):LiveData<List<BlogData>>
+    {
+        blogList=blogRepository.searchBlogs(context,"%" + query + "%")
+        return blogList as LiveData<List<BlogData>>
+    }
 }
