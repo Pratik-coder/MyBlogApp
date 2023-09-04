@@ -9,27 +9,26 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cookingapp.R
+import com.example.cookingapp.databinding.LayoutBloglistBinding
+import com.example.cookingapp.databinding.LayoutFavouritebloglistBinding
 import com.example.cookingapp.model.BlogData
 import com.example.cookingapp.model.FavouriteBlogData
 
 class FavouriteAdapter(private var context: Context,private var favouriteBlogList: MutableList<BlogData>) :RecyclerView.Adapter<FavouriteAdapter.MyViewHolder>()
 {
     private lateinit var onDeleteFavouriteBlogClick: OnDeleteFavouriteBlogClick
+    private lateinit var getLocationByClickListener:getLocationByClick
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder
     {
-       val view=LayoutInflater.from(parent.context).inflate(R.layout.layout_favouritebloglist,parent,false)
-       return MyViewHolder(view)
+        val holderFavouriteBlogBinding= LayoutFavouritebloglistBinding.inflate(LayoutInflater.from(parent.context),parent,false)
+        return MyViewHolder(holderFavouriteBlogBinding)
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int)
     {
-        val favouriteBlogData=favouriteBlogList[position]
-        holder.textViewFavouriteBlogTitle.text =favouriteBlogData.title
-        holder.textViewFavouriteBlogPlace.text =favouriteBlogData.place
-        holder.imageViewDelete.setOnClickListener {
-            onDeleteFavouriteBlogClick.deleteFavouriteFromList(favouriteBlogData.id)
-        }
+        holder.onBindFavouriteData(deleteFavouriteItem(position))
+        holder.onBindFavouriteData(getLocation(position))
     }
 
     fun removeBlogFromFavourites(position:Int)
@@ -65,12 +64,32 @@ class FavouriteAdapter(private var context: Context,private var favouriteBlogLis
         this.onDeleteFavouriteBlogClick=listener
     }
 
+    private fun deleteFavouriteItem(position: Int):BlogData=favouriteBlogList[position]
 
-    class MyViewHolder(itemView:View):RecyclerView.ViewHolder(itemView)
+    interface getLocationByClick
     {
-       val cardViewFavourite:CardView=itemView.findViewById(R.id.cardViewFavouriteBlog)
-       val textViewFavouriteBlogTitle:TextView=itemView.findViewById(R.id.tv_favouriteblogTitle)
-       val textViewFavouriteBlogPlace:TextView=itemView.findViewById(R.id.tv_favouriteblogPlace)
-       val imageViewDelete:ImageView=itemView.findViewById(R.id.iv_deleteFavourite)
+        fun getLocation(position: Int)
+    }
+
+    fun setOnLocationClickListener(locationClick:getLocationByClick)
+    {
+        this.getLocationByClickListener=locationClick
+    }
+
+    private fun getLocation(position: Int):BlogData=favouriteBlogList[position]
+
+   inner class MyViewHolder(private val binding:LayoutFavouritebloglistBinding):RecyclerView.ViewHolder(binding.root)
+    {
+       fun onBindFavouriteData(favouriteBlogData:BlogData)
+      {
+           binding.tvFavouriteblogTitle.text=favouriteBlogData.title
+           binding.tvFavouriteblogPlace.text=favouriteBlogData.place
+           binding.ivDeleteFavourite.setOnClickListener {
+               onDeleteFavouriteBlogClick.deleteFavouriteFromList(favouriteBlogData.id)
+           }
+          binding.imageViewLocation.setOnClickListener {
+              getLocationByClickListener.getLocation(favouriteBlogData.id)
+          }
+       }
     }
 }

@@ -54,7 +54,7 @@ class BlogViewModel @Inject constructor (private val blogRepository: BlogReposit
               }
          }
 
-   fun getBlogsBySearch(context: Context, query:String):LiveData<List<BlogData>>
+   fun getBlogsBySearch(context: Context,query:String):LiveData<List<BlogData>>
     {
         blogList=blogRepository.searchBlogs(context,"%" + query + "%")
         return blogList as LiveData<List<BlogData>>

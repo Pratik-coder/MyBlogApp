@@ -3,6 +3,8 @@ package com.example.cookingapp.fragments
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
+import android.media.audiofx.Equalizer.Settings
 import android.os.Bundle
 import android.view.Gravity
 import androidx.fragment.app.Fragment
@@ -20,11 +22,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.cookingapp.R
 import com.example.cookingapp.activity.DashboardActivity
 import com.example.cookingapp.adapter.FavouriteAdapter
+import com.example.cookingapp.databinding.FragmentFavouritesBinding
 import com.example.cookingapp.model.BlogData
 import com.example.cookingapp.model.FavouriteBlogData
 import com.example.cookingapp.repository.BlogRepository
 import com.example.cookingapp.viewmodel.BlogViewModel
 import com.example.cookingapp.viewmodelfactory.BlogViewModelFactory
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -40,11 +44,11 @@ class FavouritesFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-    private lateinit var recyclerViewFavouriteBlog:RecyclerView
+    private lateinit var favouritesBinding: FragmentFavouritesBinding
     private lateinit var blogViewModel: BlogViewModel
     private  var blogRepository: BlogRepository = BlogRepository()
     private lateinit var favouriteAdapter: FavouriteAdapter
-    private lateinit var textViewNoFavourites:TextView
+
 
 
     override fun onAttach(context: Context) {
@@ -66,11 +70,10 @@ class FavouritesFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val view= inflater.inflate(R.layout.fragment_favourites, container, false)
-        textViewNoFavourites=view.findViewById(R.id.tv_nofavblog)
-        recyclerViewFavouriteBlog=view.findViewById(R.id.rv_favouriteBlogList)
+       // val view= inflater.inflate(R.layout.fragment_favourites, container, false)
+        favouritesBinding=FragmentFavouritesBinding.inflate(inflater)
         blogViewModel= ViewModelProvider(this, BlogViewModelFactory(blogRepository)).get(BlogViewModel::class.java)
-        return view
+        return favouritesBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -94,16 +97,17 @@ class FavouritesFragment : Fragment() {
         blogViewModel.getAllFavouriteBlogs(activity).observe(activity, Observer<MutableList<BlogData>> {
             if (it.isNotEmpty() && it!=null)
             {
-                textViewNoFavourites.visibility=View.GONE
+                favouritesBinding.tvNofavblog.visibility=View.GONE
                 favouriteAdapter=FavouriteAdapter(activity,it)
                 val layoutManager=LinearLayoutManager(activity,LinearLayoutManager.VERTICAL,false)
-                recyclerViewFavouriteBlog.layoutManager=layoutManager
-                recyclerViewFavouriteBlog.adapter=favouriteAdapter
+                favouritesBinding.rvFavouriteBlogList.layoutManager=layoutManager
+                favouritesBinding.rvFavouriteBlogList.adapter=favouriteAdapter
                 showDeleteFavouriteAlert()
+                getLocationPermission()
             }
             else
             {
-                textViewNoFavourites.visibility=View.VISIBLE
+                favouritesBinding.tvNofavblog.visibility=View.VISIBLE
             }
         })
     }
@@ -140,6 +144,36 @@ class FavouritesFragment : Fragment() {
             }
         })
     }
+
+    private fun openLocationSettings()=startActivity(Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS))
+
+    private fun getLocationPermission()
+    {
+        favouriteAdapter.setOnLocationClickListener(object :FavouriteAdapter.getLocationByClick
+        {
+            override fun getLocation(position: Int) {
+                val alertDialogBuilder=AlertDialog.Builder(requireContext())
+                alertDialogBuilder.setTitle(getString(R.string.str_LocationTitle))
+                    .setMessage(getString(R.string.str_LocationMessage))
+                    .setCancelable(false)
+                    .setPositiveButton(getString(R.string.str_yes))
+                    {
+                        dialogInterface,_->
+                        dialogInterface.dismiss()
+                        openLocationSettings()
+                    }
+                    .setNegativeButton(getString(R.string.str_no))
+                    {
+                            dialogInterface,_->
+                            dialogInterface.dismiss()
+                    }
+                alertDialogBuilder.create()
+                alertDialogBuilder.show()
+            }
+        })
+    }
+
+
 
     override fun onPause() {
         super.onPause()

@@ -9,7 +9,7 @@ import com.example.cookingapp.model.BlogData
 import com.example.cookingapp.model.FavouriteBlogData
 
 
-@Database(entities = [BlogData::class], version = 3, exportSchema = false)
+@Database(entities = [BlogData::class], version = 4, exportSchema = false)
 
 abstract class BlogDatabase:RoomDatabase()
 {

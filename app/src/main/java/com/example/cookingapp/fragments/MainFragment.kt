@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.cookingapp.R
 import com.example.cookingapp.activity.DashboardActivity
 import com.example.cookingapp.adapter.BlogAdapter
+import com.example.cookingapp.databinding.FragmentMainBinding
 import com.example.cookingapp.model.BlogData
 import com.example.cookingapp.preferences.MySharedPreferences
 import com.example.cookingapp.repository.BlogRepository
@@ -51,18 +52,10 @@ class MainFragment : Fragment(){
    /* // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null*/
-    private lateinit var recyclerViewBlogList: RecyclerView
+    private lateinit var mainFragmentBinding:FragmentMainBinding
     private lateinit var blogViewModel: BlogViewModel
     private  var blogRepository: BlogRepository = BlogRepository()
     private lateinit var blogAdapter:BlogAdapter
-    private lateinit var textViewNoBlog:TextView
-    private lateinit var linearLayoutBlogSearch: LinearLayout
-    private lateinit var editTextSearch: EditText
-    private lateinit var imageViewSearch:ImageView
-
-
-
-
 
 
     override fun onAttach(context: Context) {
@@ -91,21 +84,17 @@ class MainFragment : Fragment(){
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val view= inflater.inflate(R.layout.fragment_main, container, false)
-        textViewNoBlog=view.findViewById(R.id.tv_noblog)
-        recyclerViewBlogList=view.findViewById(R.id.rv_blogList)
-        imageViewSearch=view.findViewById(R.id.iv_Search)
-        linearLayoutBlogSearch=view.findViewById(R.id.ll_BlogSearch)
-        editTextSearch=view.findViewById(R.id.et_searchBlogs)
+      //  val view= inflater.inflate(R.layout.fragment_main, container, false)
+        mainFragmentBinding=FragmentMainBinding.inflate(inflater)
         blogViewModel=ViewModelProvider(this,BlogViewModelFactory(blogRepository)).get(BlogViewModel::class.java)
-        return view
+        return mainFragmentBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
               setObservers()
               onSearchImageClick()
-            //  searchBlogs()
+
     }
 
     private fun setObservers()
@@ -113,15 +102,15 @@ class MainFragment : Fragment(){
         val activity=activity as DashboardActivity
         blogViewModel.getAllBlogs(activity).observe(activity, Observer<List<BlogData>> {
             if (it.isEmpty()) {
-                textViewNoBlog.visibility = View.VISIBLE
-                imageViewSearch.visibility=View.GONE
+                mainFragmentBinding.tvNoblog.visibility=View.VISIBLE
+                mainFragmentBinding.ivSearch.visibility=View.GONE
             } else {
-                textViewNoBlog.visibility = View.GONE
-                imageViewSearch.visibility=View.VISIBLE
+                mainFragmentBinding.tvNoblog.visibility=View.GONE
+                mainFragmentBinding.ivSearch.visibility=View.VISIBLE
                 blogAdapter = BlogAdapter(activity, it)
                 val layoutManager=LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
-                recyclerViewBlogList.layoutManager=layoutManager
-                recyclerViewBlogList.adapter = blogAdapter
+                mainFragmentBinding.rvBlogList.layoutManager=layoutManager
+                mainFragmentBinding.rvBlogList.adapter=blogAdapter
                 //  Log.d("TAG",it.toString())
                 blogAdapter.setOnFavouriteClickListener(object :
                     BlogAdapter.OnFavouriteImageClick {
@@ -136,28 +125,29 @@ class MainFragment : Fragment(){
 
     private fun onSearchImageClick()
     {
-        imageViewSearch.setOnClickListener {
-            linearLayoutBlogSearch.visibility=View.VISIBLE
+        mainFragmentBinding.ivSearch.setOnClickListener {
+            mainFragmentBinding.llBlogSearch.visibility=View.VISIBLE
             searchBlogs()
         }
     }
 
 
+   @SuppressLint("SuspiciousIndentation")
    private fun searchBlogs()
    {
        val activity=activity as DashboardActivity
-            editTextSearch.addTextChangedListener(object :TextWatcher
+            mainFragmentBinding.etSearchBlogs.addTextChangedListener(object :TextWatcher
             {
                 override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
 
                 }
 
                 override fun onTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                     val strquery:String=s.toString()
-                     blogViewModel.getBlogsBySearch(requireActivity(),strquery).observe(requireActivity(),Observer<List<BlogData>>
+                     val strQuery:String=s.toString()
+                     blogViewModel.getBlogsBySearch(requireActivity(),strQuery).observe(requireActivity(),Observer<List<BlogData>>
                      {
                          blogAdapter=BlogAdapter(activity,it)
-                         recyclerViewBlogList.adapter=blogAdapter
+                         mainFragmentBinding.rvBlogList.adapter=blogAdapter
                      })
                 }
 

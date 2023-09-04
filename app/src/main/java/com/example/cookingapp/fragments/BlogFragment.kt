@@ -15,6 +15,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.example.cookingapp.R
+import com.example.cookingapp.databinding.FragmentBlogBinding
 import com.example.cookingapp.model.BlogData
 import com.example.cookingapp.preferences.MySharedPreferences
 import com.example.cookingapp.repository.BlogRepository
@@ -36,10 +37,7 @@ class BlogFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-    private lateinit var etblogTitle:EditText
-    private lateinit var etblogDescription:EditText
-    private lateinit var etblogPlace:EditText
-    private lateinit var textViewAdd: TextView
+    private lateinit var blogBinding: FragmentBlogBinding
     private lateinit var blogViewModel:BlogViewModel
     private  var blogRepository:BlogRepository=BlogRepository()
     private lateinit var preferences:MySharedPreferences
@@ -58,14 +56,11 @@ class BlogFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-         val view= inflater.inflate(R.layout.fragment_blog, container, false)
-        etblogTitle=view.findViewById(R.id.et_blogtitle)
-        etblogDescription=view.findViewById(R.id.et_blogdescription)
-        etblogPlace=view.findViewById(R.id.et_blogplace)
-        textViewAdd=view.findViewById(R.id.tv_addblog)
+        // val view= inflater.inflate(R.layout.fragment_blog, container, false)
+        blogBinding=FragmentBlogBinding.inflate(inflater)
         preferences= MySharedPreferences(requireActivity())
         blogViewModel=ViewModelProvider(this,BlogViewModelFactory(blogRepository)).get(BlogViewModel::class.java)
-        return view
+        return blogBinding.root
     }
 
 
@@ -83,10 +78,10 @@ class BlogFragment : Fragment() {
 
     private fun setObservers()
     {
-        textViewAdd.setOnClickListener {
-            val strBlogTitle=etblogTitle.text.toString()
-            val strBlogDescription=etblogDescription.text.toString()
-            val strBlogPlace=etblogPlace.text.toString()
+        blogBinding.tvAddblog.setOnClickListener {
+            val strBlogTitle=blogBinding.etBlogtitle.text.toString()
+            val strBlogDescription=blogBinding.etBlogdescription.text.toString()
+            val strBlogPlace=blogBinding.etBlogplace.text.toString()
 
             if (TextUtils.isEmpty(strBlogTitle))
             {
@@ -114,17 +109,17 @@ class BlogFragment : Fragment() {
 
     private fun ClearBlog()
     {
-        etblogDescription.setText("")
-        etblogTitle.setText("")
-        etblogPlace.setText("")
+       blogBinding.etBlogtitle.setText("")
+       blogBinding.etBlogdescription.setText("")
+       blogBinding.etBlogplace.setText("")
     }
 
 
     override fun onResume() {
         super.onResume()
-        preferences.setTextTitle(etblogTitle.text.toString())
-        preferences.setTextDescription(etblogDescription.text.toString())
-        preferences.setTextPlace(etblogPlace.text.toString())
+        preferences.setTextTitle(blogBinding.etBlogtitle.text.toString())
+        preferences.setTextDescription(blogBinding.etBlogdescription.text.toString())
+        preferences.setTextPlace(blogBinding.etBlogplace.text.toString())
     }
 
     override fun onPause() {

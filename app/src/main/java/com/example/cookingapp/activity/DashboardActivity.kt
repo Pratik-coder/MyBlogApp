@@ -18,6 +18,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 class DashboardActivity : AppCompatActivity()
 {
     private lateinit var bottomNavigationView: BottomNavigationView
+    private lateinit var currentFragment:Fragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,7 +26,6 @@ class DashboardActivity : AppCompatActivity()
         bottomNavigationView=findViewById(R.id.bottomNavigationView)
         loadFragment(MainFragment.newInstance())
         getFragmentByName()
-        //getFragmentByClick()
     }
 
 
@@ -37,7 +37,7 @@ class DashboardActivity : AppCompatActivity()
 
     private fun getFragmentByName()
     {
-        bottomNavigationView.setOnItemSelectedListener {
+        /*bottomNavigationView.setOnItemSelectedListener {
             item->
             var fragment=Fragment()
             when(item.itemId)
@@ -48,12 +48,12 @@ class DashboardActivity : AppCompatActivity()
                   loadFragment(fragment)
                     true
                 }
-                /*R.id.nav_users->
+                *//*R.id.nav_users->
                 {
                     fragment=UserFragment()
                     loadFragment(fragment)
                     true
-                }*/
+                }*//*
                 R.id.nav_addblog->
                 {
                     fragment=BlogFragment()
@@ -67,39 +67,34 @@ class DashboardActivity : AppCompatActivity()
                     loadFragment(fragment)
                     true
                 }
+
+                R.id.nav_settings->
+                {
+                    fragment=SettingsFragment()
+                    loadFragment(fragment)
+                    true
+                }
                 else->false
             }
-        }
-    }
-
-    /*override fun onBackPressed() {
-       if (supportFragmentManager.backStackEntryCount>0)
-       {
-           supportFragmentManager.popBackStack()
-       }
-        else
-       {
-           super.onBackPressed()
-       }
-    }*/
-
-    private fun getFragmentByClick()
-    {
-        bottomNavigationView.setOnItemSelectedListener { item->
-            val fragment:Fragment=when(item.itemId)
+        }*/
+        bottomNavigationView.setOnItemSelectedListener {
+            when(it.itemId)
             {
-                R.id.nav_home->MainFragment()
-                R.id.nav_addblog->BlogFragment()
-                R.id.nav_addfaourited->FavouritesFragment()
-                else->MainFragment()
+                R.id.nav_home->setFragment(MainFragment())
+                R.id.nav_addblog->setFragment(BlogFragment())
+                R.id.nav_addfaourited->setFragment(FavouritesFragment())
+            //    R.id.nav_settings->setFragment(SettingsFragment())
             }
-            loadFragmentByEvent(fragment)
-            true
+            return@setOnItemSelectedListener true
         }
     }
 
-    private fun loadFragmentByEvent(fragment: Fragment)
+    private fun setFragment(fragment: Fragment)
     {
-        supportFragmentManager.beginTransaction().replace(R.id.frameLayout,fragment,"TAG").addToBackStack(null).commit()
+        currentFragment=fragment
+        val transcation=supportFragmentManager.beginTransaction()
+        transcation.replace(R.id.frameLayout,fragment)
+        transcation.addToBackStack(null)
+        transcation.commit()
     }
 }

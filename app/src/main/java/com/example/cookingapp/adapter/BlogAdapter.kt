@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cookingapp.R
+import com.example.cookingapp.databinding.LayoutBloglistBinding
 import com.example.cookingapp.model.BlogData
 import com.example.cookingapp.preferences.MySharedPreferences
 import com.example.cookingapp.repository.BlogRepository
@@ -27,8 +28,8 @@ class BlogAdapter(private var context: Context,private var blogList:List<BlogDat
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val view=LayoutInflater.from(parent.context).inflate(R.layout.layout_bloglist,parent,false)
-        return MyViewHolder(view)
+        val holderBlogBinding=LayoutBloglistBinding.inflate(LayoutInflater.from(parent.context),parent,false)
+        return MyViewHolder(holderBlogBinding)
     }
 
 
@@ -36,13 +37,7 @@ class BlogAdapter(private var context: Context,private var blogList:List<BlogDat
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int)
     {
-        val blogData=blogList[position]
-        holder.textViewBlogTitle.text=blogData.title
-        holder.textViewBlogDescription.text=blogData.description
-        holder.imageViewFavourite.setImageResource(if(blogData.isFavourite)R.drawable.ic_baseline_favorite_24 else R.drawable.ic_baseline_favorite_border_24)
-        holder.imageViewFavourite.setOnClickListener {
-            onFavouriteClickListener.OnFavouriteBlogClick(blogData)
-        }
+       holder.onBind(setFavouriteItem(position))
     }
 
     override fun getItemCount(): Int {
@@ -61,12 +56,16 @@ class BlogAdapter(private var context: Context,private var blogList:List<BlogDat
 
   private fun setFavouriteItem(position: Int):BlogData=blogList[position]
 
-    class MyViewHolder(itemView:View):RecyclerView.ViewHolder(itemView)
+   inner class MyViewHolder(private val binding:LayoutBloglistBinding):RecyclerView.ViewHolder(binding.root)
     {
-       val cardViewBlogList:CardView=itemView.findViewById(R.id.card_blogList)
-       val linearLayoutBlogList:LinearLayout=itemView.findViewById(R.id.linearLayoutblogList)
-       val textViewBlogTitle:TextView=itemView.findViewById(R.id.tv_blogTitle)
-       val textViewBlogDescription:TextView=itemView.findViewById(R.id.tv_blogDescription)
-       val imageViewFavourite:ImageView=itemView.findViewById(R.id.iv_blogFavourite)
-    }
+       fun onBind(blogData: BlogData)
+       {
+           binding.tvBlogTitle.text=blogData.title
+           binding.tvBlogDescription.text=blogData.description
+           binding.ivBlogFavourite.setImageResource(if(blogData.isFavourite)R.drawable.ic_baseline_favorite_24 else R.drawable.ic_baseline_favorite_border_24)
+           binding.ivBlogFavourite.setOnClickListener {
+           onFavouriteClickListener.OnFavouriteBlogClick(blogData)
+           }
+       }
+   }
 }
