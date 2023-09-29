@@ -21,7 +21,7 @@ import com.example.cookingapp.viewmodel.BlogViewModel
 import com.example.cookingapp.viewmodelfactory.BlogViewModelFactory
 
 
-class BlogAdapter(private var context: Context,private var blogList:List<BlogData>): RecyclerView.Adapter<BlogAdapter.MyViewHolder>()
+class BlogAdapter(private var context: Context,private var blogList:MutableList<BlogData>): RecyclerView.Adapter<BlogAdapter.MyViewHolder>()
 {
     private lateinit var onFavouriteClickListener:OnFavouriteImageClick
 
@@ -52,6 +52,15 @@ class BlogAdapter(private var context: Context,private var blogList:List<BlogDat
     fun setOnFavouriteClickListener(listener:OnFavouriteImageClick)
     {
        this.onFavouriteClickListener=listener
+    }
+
+    fun updateData(newList:List<BlogData>)
+    {
+       /* blogList=newList
+        notifyDataSetChanged()*/
+        blogList.clear()
+        blogList.addAll(newList)
+        notifyDataSetChanged()
     }
 
   private fun setFavouriteItem(position: Int):BlogData=blogList[position]

@@ -38,10 +38,10 @@ class FavouriteAdapter(private var context: Context,private var favouriteBlogLis
             favouriteBlogList.removeAt(position)
             notifyItemRemoved(position)
         }
-        ClearAllBlog()
+        clearAllBlog()
     }
 
-    fun ClearAllBlog()
+    fun clearAllBlog()
     {
         favouriteBlogList.clear()
         notifyDataSetChanged()

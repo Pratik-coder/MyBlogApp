@@ -12,7 +12,7 @@ import com.example.cookingapp.model.BlogData
 interface BlogDao
 {
      @Query("SELECT * FROM ${Constant.DATABASE_NAME}")
-     fun getAllBlogs(): LiveData<List<BlogData>>
+     fun getAllBlogs(): LiveData<MutableList<BlogData>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertBlog(blogData: BlogData)
@@ -27,5 +27,5 @@ interface BlogDao
     suspend fun updateFavouriteStatus(id:Int,isFavourite:Boolean)
 
    @Query("SELECT * FROM ${Constant.DATABASE_NAME} WHERE title LIKE :query")
-    fun getBlogsByTitle(query:String):LiveData<List<BlogData>>
+    fun getBlogsByTitle(query:String):LiveData<MutableList<BlogData>>
 }

@@ -1,5 +1,6 @@
 package com.example.cookingapp.fragments
 
+import android.app.Activity
 import android.app.ProgressDialog
 import android.content.Context
 import android.os.Bundle
@@ -15,6 +16,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.example.cookingapp.R
+import com.example.cookingapp.activity.DashboardActivity
 import com.example.cookingapp.databinding.FragmentBlogBinding
 import com.example.cookingapp.model.BlogData
 import com.example.cookingapp.preferences.MySharedPreferences
@@ -42,6 +44,20 @@ class BlogFragment : Fragment() {
     private  var blogRepository:BlogRepository=BlogRepository()
     private lateinit var preferences:MySharedPreferences
 
+
+
+    /*override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is DashboardActivity)
+        {
+             val activity=context as DashboardActivity
+        }
+        else
+        {
+            throw IllegalArgumentException("Host Activity must be of type my activity")
+        }
+    }
+*/
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -101,13 +117,13 @@ class BlogFragment : Fragment() {
                 return@setOnClickListener
             }
 
-            blogViewModel.AddBlog(requireActivity(),strBlogTitle,strBlogDescription,strBlogPlace)
+            blogViewModel.addBlog(requireActivity(),strBlogTitle,strBlogDescription,strBlogPlace)
             Toast.makeText(activity,getString(R.string.str_blogsuccessfull),Toast.LENGTH_SHORT).show()
-            ClearBlog()
+            clearBlog()
         }
     }
 
-    private fun ClearBlog()
+    private fun clearBlog()
     {
        blogBinding.etBlogtitle.setText("")
        blogBinding.etBlogdescription.setText("")
@@ -132,7 +148,7 @@ class BlogFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        ClearBlog()
+        clearBlog()
     }
 
     override fun onDestroyView() {

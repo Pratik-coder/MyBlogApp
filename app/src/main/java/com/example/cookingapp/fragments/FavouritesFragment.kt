@@ -51,9 +51,17 @@ class FavouritesFragment : Fragment() {
 
 
 
-    override fun onAttach(context: Context) {
+   /* override fun onAttach(context: Context) {
         super.onAttach(context)
-    }
+        if (context is DashboardActivity)
+        {
+            val activity=context as DashboardActivity
+        }
+        else
+        {
+            throw IllegalArgumentException("Host Activity must be of type my activity")
+        }
+    }*/
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -135,9 +143,7 @@ class FavouritesFragment : Fragment() {
                     .setNegativeButton(getString(R.string.str_no))
                     {
                             dialogInterface,_->
-                        {
                             dialogInterface.dismiss()
-                        }
                     }
                 alertDialogBuilder.create()
                 alertDialogBuilder.show()
@@ -194,6 +200,7 @@ class FavouritesFragment : Fragment() {
 
     override fun onDetach() {
         super.onDetach()
+
     }
 
 

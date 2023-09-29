@@ -26,7 +26,7 @@ class BlogRepository
             return BlogDatabase.getDatabase(context)
         }
 
-        fun getAllBlogList(context: Context):LiveData<List<BlogData>> {
+        fun getAllBlogList(context: Context):LiveData<MutableList<BlogData>> {
             blogDatabase = initializeDatabase(context)
             return blogDatabase.blogDao().getAllBlogs()
         }
@@ -61,9 +61,11 @@ class BlogRepository
         }
      }
 
-    fun searchBlogs(context: Context, query:String):LiveData<List<BlogData>>
+    fun searchBlogs(context: Context, query:String):LiveData<MutableList<BlogData>>
     {
         blogDatabase=initializeDatabase(context)
         return blogDatabase.blogDao().getBlogsByTitle("%" + query + "%")
     }
+
+
 }

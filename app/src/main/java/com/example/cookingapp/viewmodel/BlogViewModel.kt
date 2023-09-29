@@ -16,22 +16,22 @@ import javax.inject.Inject
 
 class BlogViewModel @Inject constructor (private val blogRepository: BlogRepository):ViewModel()
 {
-    var blogList:LiveData<List<BlogData>>?=null
+    var blogList:LiveData<MutableList<BlogData>>?=null
     var favBlogList:LiveData<MutableList<BlogData>>?=null
 
-    fun getAllBlogs(context: Context):LiveData<List<BlogData>>
+    fun getAllBlogs(context: Context):LiveData<MutableList<BlogData>>
     {
         blogList=blogRepository.getAllBlogList(context)
-        return blogList as LiveData<List<BlogData>>
+        return blogList as LiveData<MutableList<BlogData>>
     }
 
-    fun AddBlog(context: Context,blogTitle:String,blogDescription:String,blogPlace:String)
+    fun addBlog(context: Context,blogTitle:String,blogDescription:String,blogPlace:String)
     {
         blogRepository.insertBlogData(context,blogTitle,blogDescription,blogPlace)
     }
 
 
-    fun MarkBlogAsFavourite(context: Context,blogData: BlogData)
+    fun markBlogAsFavourite(context: Context,blogData: BlogData)
     {
         if(!blogData.isFavourite) {
         blogData.isFavourite = true
@@ -54,9 +54,10 @@ class BlogViewModel @Inject constructor (private val blogRepository: BlogReposit
               }
          }
 
-   fun getBlogsBySearch(context: Context,query:String):LiveData<List<BlogData>>
+   fun getBlogsBySearch(context: Context,query:String):LiveData<MutableList<BlogData>>
     {
         blogList=blogRepository.searchBlogs(context,"%" + query + "%")
-        return blogList as LiveData<List<BlogData>>
+        return blogList as LiveData<MutableList<BlogData>>
     }
+
 }

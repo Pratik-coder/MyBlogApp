@@ -56,6 +56,8 @@ class MainFragment : Fragment(){
     private lateinit var blogViewModel: BlogViewModel
     private  var blogRepository: BlogRepository = BlogRepository()
     private lateinit var blogAdapter:BlogAdapter
+    private var isBlogSearch=true
+
 
 
     override fun onAttach(context: Context) {
@@ -94,13 +96,13 @@ class MainFragment : Fragment(){
         super.onViewCreated(view, savedInstanceState)
               setObservers()
               onSearchImageClick()
-
     }
 
     private fun setObservers()
     {
+
         val activity=activity as DashboardActivity
-        blogViewModel.getAllBlogs(activity).observe(activity, Observer<List<BlogData>> {
+        blogViewModel.getAllBlogs(activity).observe(activity, Observer<MutableList<BlogData>> {
             if (it.isEmpty()) {
                 mainFragmentBinding.tvNoblog.visibility=View.VISIBLE
                 mainFragmentBinding.ivSearch.visibility=View.GONE
@@ -115,7 +117,7 @@ class MainFragment : Fragment(){
                 blogAdapter.setOnFavouriteClickListener(object :
                     BlogAdapter.OnFavouriteImageClick {
                     override fun OnFavouriteBlogClick(blogData: BlogData) {
-                        blogViewModel.MarkBlogAsFavourite(requireActivity(), blogData)
+                        blogViewModel.markBlogAsFavourite(requireActivity(),blogData)
                         Toast.makeText(activity,getString(R.string.str_addBlogToFavourite), Toast.LENGTH_SHORT).show()
                     }
                 })
@@ -123,11 +125,18 @@ class MainFragment : Fragment(){
         })
     }
 
-    private fun onSearchImageClick()
-    {
+    private fun onSearchImageClick() {
         mainFragmentBinding.ivSearch.setOnClickListener {
-            mainFragmentBinding.llBlogSearch.visibility=View.VISIBLE
-            searchBlogs()
+            if (isBlogSearch) {
+                mainFragmentBinding.llBlogSearch.visibility = View.VISIBLE
+                mainFragmentBinding.ivSearch.visibility = View.GONE
+                searchBlogs()
+            }
+           /* else{
+                mainFragmentBinding.llBlogSearch.visibility=View.GONE
+                mainFragmentBinding.ivSearch.visibility=View.VISIBLE
+                isBlogSearch=false
+            }*/
         }
     }
 
@@ -135,6 +144,7 @@ class MainFragment : Fragment(){
    @SuppressLint("SuspiciousIndentation")
    private fun searchBlogs()
    {
+
        val activity=activity as DashboardActivity
             mainFragmentBinding.etSearchBlogs.addTextChangedListener(object :TextWatcher
             {
@@ -143,16 +153,30 @@ class MainFragment : Fragment(){
                 }
 
                 override fun onTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                     val strQuery:String=s.toString()
-                     blogViewModel.getBlogsBySearch(requireActivity(),strQuery).observe(requireActivity(),Observer<List<BlogData>>
-                     {
-                         blogAdapter=BlogAdapter(activity,it)
-                         mainFragmentBinding.rvBlogList.adapter=blogAdapter
-                     })
+
                 }
 
                 override fun afterTextChanged(s: Editable?) {
-
+                    val strQuery:String=s.toString()
+                    blogViewModel.getBlogsBySearch(requireActivity(),strQuery).observe(requireActivity(),Observer<MutableList<BlogData>>
+                    {
+                        try {
+                             blogAdapter.updateData(it)
+                             blogAdapter.notifyDataSetChanged()
+                             blogAdapter.setOnFavouriteClickListener(object :
+                                BlogAdapter.OnFavouriteImageClick {
+                                override fun OnFavouriteBlogClick(blogData: BlogData) {
+                                    blogViewModel.markBlogAsFavourite(requireActivity(), blogData)
+                                    Toast.makeText(activity, getString(R.string.str_addBlogToFavourite), Toast.LENGTH_SHORT).show()
+                                }
+                            })
+                        }
+                        catch (e:Exception)
+                        {
+                            e.printStackTrace()
+                            Toast.makeText(activity,"Error Updating data :${e.message}",Toast.LENGTH_SHORT).show()
+                        }
+                    })
                 }
             })
    }
@@ -161,7 +185,7 @@ class MainFragment : Fragment(){
 
     override fun onResume() {
         super.onResume()
-        setObservers()
+        onSearchImageClick()
     }
 
 

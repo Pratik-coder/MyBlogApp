@@ -25,6 +25,7 @@
     <string name="str_blogsuccessfull">Details Added Successfully</string>
     <string name="str_addBlogToFavourite">Blog Added To Favourites</string>
     <string name="str_removeFromFavourites">Blog removed from favourite successfully</string>
+    <string name="str_notifyPlaces">Places on which you can create a blog on it.</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

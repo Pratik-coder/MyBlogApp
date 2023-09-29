@@ -2,6 +2,8 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
+   // id("com.android.application")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -46,6 +48,7 @@ dependencies {
 
 
     implementation 'androidx.room:room-runtime:2.5.1'
+    implementation 'com.google.firebase:firebase-messaging-ktx:23.2.1'
     annotationProcessor("androidx.room:room-compiler:2.5.1")
 
     // To use Kotlin annotation processing tool (kapt)
@@ -75,6 +78,10 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.9'
     implementation 'com.squareup.retrofit2:retrofit:2.7.2'
     implementation 'com.squareup.retrofit2:converter-gson:2.7.2'
+
+    //Firebase
+    implementation(platform("com.google.firebase:firebase-bom:32.2.3"))
+    implementation("com.google.firebase:firebase-analytics-ktx")
 
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     testImplementation 'junit:junit:4.13.2'
